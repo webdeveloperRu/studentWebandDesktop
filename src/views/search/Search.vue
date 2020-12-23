@@ -27,11 +27,23 @@
     >
       <vs-card class="px-3">
         <h3 class="mb-2">Searched: "{{ keyword }}"</h3>
-        <div v-if="search_result.length == 0" style=" font-style: italic; text-align: center" class="mt-3"> No Search Result</div>
-        <span v-else class="text-muted">Showing {{search_result.length}} results</span>
+        <div
+          v-if="search_result.length == 0"
+          style=" font-style: italic; text-align: center"
+          class="mt-3"
+        >
+          No Search Result
+        </div>
+        <span v-else class="text-muted"
+          >Showing {{ search_result.length }} results</span
+        >
         <br />
         <br />
-        <div class="search-item" v-for="(search_item, index) in search_result" v-bind:key="index">
+        <div
+          class="search-item"
+          v-for="(search_item, index) in search_result"
+          v-bind:key="index"
+        >
           <h5
             class="mb-2"
             style="
@@ -70,7 +82,7 @@ export default {
   }),
 
   computed: {
-    keyword: function () {
+    keyword: function() {
       var keyword = this.$route.params.query;
       // console.log("queyr", id);
       // return id.slice(0, id.length);

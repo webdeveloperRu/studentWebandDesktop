@@ -21,8 +21,9 @@
           @click="backToCurrentProduct"
           style="cursor: pointer; user-select: none"
           class="primary-font"
-          > {{ current_product.title }} </span
         >
+          {{ current_product.title }}
+        </span>
         / {{ current_category.name }}
       </vs-col>
       <vs-col
@@ -96,8 +97,13 @@
                     vs-xs="12"
                     code-toggler
                     :title="'This lesson is completed.'"
-                  >                    
-                    <vs-icon icon="check" color="danger" style="font-size: 20px" v-if="lesson.lessons_completed"></vs-icon>
+                  >
+                    <vs-icon
+                      icon="check"
+                      color="danger"
+                      style="font-size: 20px"
+                      v-if="lesson.lessons_completed"
+                    ></vs-icon>
                   </vs-col>
                 </vs-row>
               </div>
@@ -120,8 +126,13 @@
                 }"
               ></div>
               <div class="mx-4 mt-3">
-                <h4 class="mt-3" v-if="lesson_list[category_id] != undefined"> {{completed_lesson}} of {{ lesson_list[category_id].length }} Lessons Completed</h4>
-                <vs-progress :percent="completed_lesson_percent" color="primary">primary</vs-progress>
+                <h4 class="mt-3" v-if="lesson_list[category_id] != undefined">
+                  {{ completed_lesson }} of
+                  {{ lesson_list[category_id].length }} Lessons Completed
+                </h4>
+                <vs-progress :percent="completed_lesson_percent" color="primary"
+                  >primary</vs-progress
+                >
               </div>
             </vs-card>
             <vs-card>
@@ -130,7 +141,10 @@
                 class="d-flex"
                 style="align-items: center; justify-content: flex-start"
               >
-                <vs-avatar size="70px" :src="current_product.instructor.headshot"></vs-avatar>
+                <vs-avatar
+                  size="70px"
+                  :src="current_product.instructor.headshot"
+                ></vs-avatar>
                 <div class="ml-3">
                   <div class="mb-1">
                     <strong>{{ current_product.instructor.name }}</strong>
@@ -139,7 +153,7 @@
                 </div>
               </div>
               <div class="mt-3">
-               {{ current_product.instructor.description }}
+                {{ current_product.instructor.description }}
               </div>
             </vs-card>
           </vs-col>
@@ -159,7 +173,7 @@ export default {
   }),
 
   computed: {
-    category_id: function () {
+    category_id: function() {
       var id = this.$route.params.id;
       return id.slice(0, id.length);
     },
@@ -226,7 +240,7 @@ export default {
   },
 
   created() {
-    this.getLessonsForCategoryID(this.category_id) 
+    this.getLessonsForCategoryID(this.category_id);
     // let total_lesson = this.lesson_list.length + 1;
     // console.log('lesson list', this.lesson_list)
     //   var count = 0;
@@ -237,7 +251,6 @@ export default {
     //   }
     //   console.log('count', count)
     //   this.completed_lesson = count;
-
   },
 
   methods: {
@@ -249,19 +262,18 @@ export default {
         .then(() => {
           var count = 0;
           var total_lesson = this.lesson_list[category_id].length;
-          for (let i = 0 ; i < total_lesson ; i++) {
+          for (let i = 0; i < total_lesson; i++) {
             if (this.lesson_list[category_id][i].lessons_completed)
               count = count + 1;
           }
           this.completed_lesson = count;
-          this.completed_lesson_percent = count * 100 / total_lesson;
+          this.completed_lesson_percent = (count * 100) / total_lesson;
 
           // this.$vs.notify({
           //   color: this.notification_color,
           //   text: this.notification_text,
           //   icon: this.notification_icon,
           // });
-          
         });
       this.$vs.loading.close(this.$refs.loading);
     },
@@ -353,7 +365,7 @@ export default {
   margin-top: 60px;
 }
 
-.progress-thumbnail .vs-card--content{
+.progress-thumbnail .vs-card--content {
   padding: 0;
   padding-bottom: 20px;
 }

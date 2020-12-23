@@ -96,7 +96,7 @@ export default {
    */
   created() {
     if (this.user_logged) this.getProductList();
-    else this.$router.push("/login").catch(()=>{});
+    else this.$router.push("/login").catch(() => {});
   },
   /**
    * --------------method part-------------

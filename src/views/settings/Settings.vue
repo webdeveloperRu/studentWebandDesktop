@@ -65,7 +65,12 @@
               v-model="time_zone"
               class="w-100 mt-3"
             /> -->
-            <vs-select class="w-100 mt-3" label="Time zone" placeholder="Please select your timezone" v-model="time_zone">
+            <vs-select
+              class="w-100 mt-3"
+              label="Time zone"
+              placeholder="Please select your timezone"
+              v-model="time_zone"
+            >
               <vs-select-item
                 :key="index"
                 :value="item.value"
@@ -109,29 +114,37 @@
                   Recommended dimensions of
                   <strong>100<i class="mdi mdi-close"></i>100</strong>
                 </div>
-                <vs-row 
-                vs-justify="center" vs-align="center"
-                >
-                <vs-col vs-justify="center" vs-align="center" vs-lg="6" vs-sm="12">
-                  <label class="avatar-select-button">
-                    <input
-                      type="file"
-                      style="overflow: hidden"
-                      class="custom-file-input"
-                      accept="image/png, image/jpeg"
-                      @change="onSelectAvatar"
-                    />
-                    Select Image
-                  </label>
-                  </vs-col>
-                <vs-col vs-justify="center" vs-align="center"  vs-lg="6" vs-sm="12">
-                  <vs-button
-                    @click="onClickRemoveAvatar"
-                    color="danger"
-                    type="flat"
-                    >Remove Image</vs-button
+                <vs-row vs-justify="center" vs-align="center">
+                  <vs-col
+                    vs-justify="center"
+                    vs-align="center"
+                    vs-lg="6"
+                    vs-sm="12"
                   >
-                </vs-col>
+                    <label class="avatar-select-button">
+                      <input
+                        type="file"
+                        style="overflow: hidden"
+                        class="custom-file-input"
+                        accept="image/png, image/jpeg"
+                        @change="onSelectAvatar"
+                      />
+                      Select Image
+                    </label>
+                  </vs-col>
+                  <vs-col
+                    vs-justify="center"
+                    vs-align="center"
+                    vs-lg="6"
+                    vs-sm="12"
+                  >
+                    <vs-button
+                      @click="onClickRemoveAvatar"
+                      color="danger"
+                      type="flat"
+                      >Remove Image</vs-button
+                    >
+                  </vs-col>
                 </vs-row>
               </div>
             </div>
@@ -320,7 +333,7 @@
   </vs-row>
 </template>
 <script>
-import time_zone from '../../models/time_zone';
+import time_zone from "../../models/time_zone";
 export default {
   name: "Settings",
 
@@ -385,7 +398,6 @@ export default {
     if (this.user_logged) {
       this.getSettings();
     } else this.$router.push("./login");
-
   },
 
   methods: {
@@ -394,8 +406,8 @@ export default {
         .dispatch("auth/getSettings")
         .then(() => {
           this.setSettings();
-          if (this.notification_text == 'apikey is invalid') {
-            this.$router.replace('/login')
+          if (this.notification_text == "apikey is invalid") {
+            this.$router.replace("/login");
           }
         })
         .catch(() => {
@@ -426,9 +438,8 @@ export default {
         name: this.full_name,
         email: this.account_email,
         time_zone: this.time_zone,
-        avatar: this.avatar_url
+        avatar: this.avatar_url,
       };
-
 
       this.$store.dispatch("auth/setCurrentSetting", update_settings_temp);
 
@@ -436,21 +447,17 @@ export default {
         .dispatch("auth/updateSettings", update_settings)
         .then(() => {
           if (this.avatar_file == null && this.avatar_url == "") {
-            this.$store.dispatch("auth/removeAvatar").then(()=>{
+            this.$store.dispatch("auth/removeAvatar").then(() => {
               this.getSettings();
               // this.$vs.notify({
               //   text: this.notification_text,
               //   icon: this.notification_icon,
               //   color: this.notification_color,
               // })
-          
+            });
+          } else this.getSettings();
 
-            });              
-          }
-          else 
-            this.getSettings();
-          
-          this.$store.dispatch("auth/updateUserData", this.user_settings)
+          this.$store.dispatch("auth/updateUserData", this.user_settings);
 
           // this.setSettings();
 
@@ -468,16 +475,17 @@ export default {
           });
         });
 
-        this.avatar_file = null;
-
-
-
-        
+      this.avatar_file = null;
     },
 
     changePassword() {
-      this.$store.dispatch("auth/changePassword", [this.current_password, this.new_password, this.verify_password])
-      .then(() => {
+      this.$store
+        .dispatch("auth/changePassword", [
+          this.current_password,
+          this.new_password,
+          this.verify_password,
+        ])
+        .then(() => {
           this.$vs.notify({
             text: this.notification_text,
             icon: this.notification_icon,
@@ -538,11 +546,9 @@ input[type="file"] {
 }
 
 @media only screen and (max-width: 600px) {
-
-   /* .setting-avatar .con-vs-avatar {
+  /* .setting-avatar .con-vs-avatar {
      width: 60px !important;
      height: 60px !important;
    } */
-
 }
 </style>

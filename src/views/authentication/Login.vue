@@ -133,20 +133,18 @@ export default {
         return this.$store.getters["auth/is_disabled"];
       },
     },
-    logged_user:{ 
+    logged_user: {
       get() {
-        return this.$store.getters["auth/logged_user"]
-      }
-    }
+        return this.$store.getters["auth/logged_user"];
+      },
+    },
   },
   created() {
-    if(this.logged_user)
-      this.$router.push('./library')
+    if (this.logged_user) this.$router.push("./library");
   },
 
-  methods: {   
-    
-    checkForm: function (e) {
+  methods: {
+    checkForm: function(e) {
       this.errors = [];
       if (!this.email) {
         this.errors.push("Email required.");
@@ -199,7 +197,7 @@ export default {
       e.preventDefault();
     },
     /* eslint-disable */
-    validEmail: function (email) {
+    validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
       return re.test(email);
     },
@@ -222,4 +220,3 @@ export default {
   cursor: pointer;
 }
 </style>
-
