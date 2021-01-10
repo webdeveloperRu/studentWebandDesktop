@@ -108,11 +108,11 @@ export default {
     async getProductList() {
       this.$vs.loading({ type: "material" });
       await this.$store.dispatch("productManage/getProductList").then(() => {
-        this.$vs.notify({
-          color: this.notification_color,
-          text: this.notification_text,
-          icon: this.notification_icon,
-        });
+        // this.$vs.notify({
+        //   color: this.notification_color,
+        //   text: this.notification_text,
+        //   icon: this.notification_icon,
+        // });
       });
       this.$vs.loading.close(this.$refs.loading);
     },

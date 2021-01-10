@@ -14,17 +14,27 @@ export default {
       this.$store
         .dispatch("auth/getSettings")
         .then(() => {
-          if (this.status_got) this.$router.push("/library").catch(() => {});
-          if (!this.status_got) this.$router.push("/login");
+          if (this.status_got) {
+            if (
+              this.$router.currentRoute.fullPath == "/" ||
+              this.$router.currentRoute.fullPath == "/Error404"
+            ) {
+              this.$router.replace("/library").catch(() => {});
+            } else {
+              this.$router.replace(this.$router.currentRoute).catch(() => {});
+            }
+          }
+          if (!this.status_got) this.$router.replace("/login");
         })
         .catch(() => {
-          this.$router.push("/login");
+          this.$router.replace("/login");
         });
     },
   },
   created() {
-    if (this.logged_user != null) this.checkToken();
-    else this.$router.push("/login");
+    if (this.logged_user != null) {
+      this.checkToken();
+    } else this.$router.replace("/login");
   },
   computed: {
     logged_user: {
