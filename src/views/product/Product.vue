@@ -272,10 +272,24 @@ export default {
         return this.$store.getters["status_got"];
       },
     },
+    is_fake: {
+      get() {
+        return this.$store.getters["is_fake"];
+      },
+    },
+  },
+  watch: {
+    is_fake: function(newValue, oldValue) {
+      this.getCategoriesForProductID(this.product_id);
+    },
+  },
+  created() {
+    this.$store.dispatch("setFakeMenu", false);
+    this.getCategoriesForProductID(this.product_id);
   },
 
-  created() {
-    this.getCategoriesForProductID(this.product_id).then(async () => {
+  methods: {
+    async loadingLessons() {
       this.$vs.loading({ type: "material" });
       if (this.category_list != undefined) {
         var total_category_num = this.category_list.length;
@@ -308,33 +322,60 @@ export default {
       this.total_completed_lesson_percent =
         (completed_lesson_num * 100) / total_lesson_num;
       this.newLength = total_category_num;
-    });
-  },
-
-  methods: {
+    },
     async getCategoriesForProductID(product_id) {
       this.showCategory = false;
-      await this.$store
-        .dispatch("categoryManage/getCategoryByProductID", product_id)
-        .then(() => {
-          // this.$vs.notify({
-          //   color: this.notification_color,
-          //   text: this.notification_text,
-          //   icon: this.notification_icon,
-          // });
-        });
+      if (this.is_fake) {
+        await this.$store
+          .dispatch("categoryManage/getCategoryByProductIDDemo", product_id)
+          .then(() => {
+            if (this.status_got) this.loadingLessons();
+            else {
+              this.$vs.notify({
+                color: this.notification_color,
+                text: this.notification_text,
+                icon: this.notification_icon,
+              });
+            }
+          });
+      } else {
+        await this.$store
+          .dispatch("categoryManage/getCategoryByProductID", product_id)
+          .then(() => {
+            if (this.status_got) this.loadingLessons();
+            else {
+              this.$vs.notify({
+                color: this.notification_color,
+                text: this.notification_text,
+                icon: this.notification_icon,
+              });
+            }
+          });
+      }
     },
 
     async getLessonsForCategoryID(category_id) {
-      await this.$store
-        .dispatch("lessonManage/getLessonList", category_id)
-        .then(() => {
-          // this.$vs.notify({
-          //   color: this.notification_color,
-          //   text: this.notification_text,
-          //   icon: this.notification_icon,
-          // });
-        });
+      if (this.is_fake) {
+        await this.$store
+          .dispatch("lessonManage/getLessonListDemo", category_id)
+          .then(() => {
+            // this.$vs.notify({
+            //   color: this.notification_color,
+            //   text: this.notification_text,
+            //   icon: this.notification_icon,
+            // });
+          });
+      } else {
+        await this.$store
+          .dispatch("lessonManage/getLessonList", category_id)
+          .then(() => {
+            // this.$vs.notify({
+            //   color: this.notification_color,
+            //   text: this.notification_text,
+            //   icon: this.notification_icon,
+            // });
+          });
+      }
     },
 
     viewMore(index) {

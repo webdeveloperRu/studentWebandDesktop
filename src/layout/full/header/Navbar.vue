@@ -11,11 +11,16 @@
       Template logo
       -->
       <div slot="title" class="themelogo">
-        <a href="/"> <img :src="logo" v-if="logo" alt="Dashboard" width="50" /></a>
+        <a href="/">
+          <img :src="logo" v-if="logo" alt="Dashboard" width="50"
+        /></a>
         <!-- <a href="/"> <img src="@/assets/images/logo.s" v-if="logo" alt="Dashboard" width="50" /></a> -->
-        <span class="logo-text" v-if="title" style="display: block; width: 300px">{{
-          title
-        }}</span>
+        <span
+          class="logo-text"
+          v-if="title"
+          style="display: block; width: 300px"
+          >{{ title }}</span
+        >
       </div>
       <!---
       Mobile toggle
@@ -224,8 +229,13 @@
             class="rounded-circle"
             width="60"
           /> -->
-          <vs-avatar size="50px" v-if="logged_user.data.avatar != null || logged_user.data.avatar != '' "
-            :src="logged_user.data.avatar"></vs-avatar>
+          <vs-avatar
+            size="50px"
+            v-if="
+              logged_user.data.avatar != null || logged_user.data.avatar != ''
+            "
+            :src="logged_user.data.avatar"
+          ></vs-avatar>
         </a>
         <vs-dropdown-menu class="user-dd common-dd topbar-dd">
           <div v-for="user in users" :user="user" :key="user.usertitle">
@@ -241,16 +251,33 @@
                   class="rounded-circle"
                   width="60"
                 /> -->
-                <vs-avatar size="60px" v-if="logged_user.data.avatar != null || logged_user.data.avatar != '' "
-                  :src="logged_user.data.avatar" ></vs-avatar>
+                <vs-avatar
+                  size="60px"
+                  v-if="
+                    logged_user.data.avatar != null ||
+                      logged_user.data.avatar != ''
+                  "
+                  :src="logged_user.data.avatar"
+                ></vs-avatar>
               </div>
               <div class="ml-2">
-                <h4 
-                v-if="logged_user.data.name != null || logged_user.data.name != '' "
-                class="mb-0 text-white">{{ logged_user.data.name }}</h4>
-                <p 
-                v-if="logged_user.data.email != null || logged_user.data.email != '' "
-                class="mb-0">{{ logged_user.data.email }}</p>
+                <h4
+                  v-if="
+                    logged_user.data.name != null || logged_user.data.name != ''
+                  "
+                  class="mb-0 text-white"
+                >
+                  {{ logged_user.data.name }}
+                </h4>
+                <p
+                  v-if="
+                    logged_user.data.email != null ||
+                      logged_user.data.email != ''
+                  "
+                  class="mb-0"
+                >
+                  {{ logged_user.data.email }}
+                </p>
               </div>
             </div>
 
@@ -268,15 +295,23 @@
             </vs-dropdown-item> -->
 
             <!-- <hr class="mb-1" /> -->
-            <vs-dropdown-item  @click="activeTwoFactorSetup = true" style="padding:5px,0px;">
+            <vs-dropdown-item
+              @click="activeTwoFactorSetup = true"
+              style="padding:5px,0px;"
+            >
               <div>
                 <i class="mr-2 mdi mdi-key-plus"></i>
-              {{user.twoFactorAuthSetup}}
+                {{ user.twoFactorAuthSetup }}
               </div>
             </vs-dropdown-item>
             <vs-dropdown-item @click="LinkToSettings">
               <vs-icon icon="gps_not_fixed" class="mr-1"></vs-icon>
               {{ user.dditem4 }}
+            </vs-dropdown-item>
+            <vs-dropdown-item @click="setFakeData" v-if="show_fake_menu">
+              <vs-checkbox class="justify-content-start" v-model="fake_data"
+                >{{ user.dditem5 }}{{ current_route }}</vs-checkbox
+              >
             </vs-dropdown-item>
             <hr class="mt-1" />
             <vs-button
@@ -295,19 +330,21 @@
       Two Factor Authentication
      /////////////////////////// -->
     <vs-popup
-    color="success"
-    :active.sync="activeTwoFactorSetup"
-    title="Two Factor Set Up"
-    class="two-factor-auth-setup"
-    fullscreen	
+      color="success"
+      :active.sync="activeTwoFactorSetup"
+      title="Two Factor Set Up"
+      class="two-factor-auth-setup"
+      fullscreen
     >
-      <TwoFactorAuthSetup :getQrCode="activeTwoFactorSetup"></TwoFactorAuthSetup>
+      <TwoFactorAuthSetup
+        :getQrCode="activeTwoFactorSetup"
+      ></TwoFactorAuthSetup>
     </vs-popup>
   </header>
 </template>
 
 <script>
-import TwoFactorAuthSetup from '../../../views/authentication/TwoFactorAuthSetup'
+import TwoFactorAuthSetup from "../../../views/authentication/TwoFactorAuthSetup";
 export default {
   name: "Navbar",
   components: {
@@ -336,6 +373,7 @@ export default {
     indexActive: 0,
     showToggle: false,
     keyword: "",
+    fake_data: true,
     // Data For User Dropdown
     users: [
       {
@@ -346,7 +384,8 @@ export default {
         dditem2: "My Balance",
         dditem3: "Inbox",
         dditem4: "Account Setting",
-        twoFactorAuthSetup: "Two Factor Authentication SetUp"
+        dditem5: "Fake Data",
+        twoFactorAuthSetup: "Two Factor Authentication SetUp",
       },
     ],
     // Data For Mailbox
@@ -421,6 +460,10 @@ export default {
     activeTwoFactorSetup: false,
   }),
 
+  created() {
+    this.fake_data = this.is_fake;
+  },
+
   methods: {
     //This is for sidebar trigger in mobile
     activeSidebar() {
@@ -441,27 +484,36 @@ export default {
       this.$i18n.locale = locale;
     },
     LinkToSettings() {
-      this.$router.push("/settings").catch(()=>{});
+      this.$router.push("/settings").catch(() => {});
+    },
+
+    setFakeData() {
+      if (this.is_fake) {
+        this.$store.dispatch("setFakeData", false);
+        this.fake_data = false;
+      } else {
+        this.$store.dispatch("setFakeData", true);
+        this.fake_data = true;
+      }
     },
     logOut() {
       this.$store.dispatch("auth/logout").then(() => {
-        this.$router.replace("/login").catch(()=>{});
+        this.$router.replace("/login").catch(() => {});
         // this.$vs.notify({
         //   color: this.notification_color,
         //   text: this.notification_text,
         //   icon: this.notification_icon,
         // });
       });
-    
     },
     async searchLessons() {
-
       this.$router.push("/search/" + this.keyword);
 
       this.$vs.loading({ type: "material" });
 
-      await this.$store.dispatch("lessonManage/searchLesson", this.keyword)
-      .then(() => {
+      await this.$store
+        .dispatch("lessonManage/searchLesson", this.keyword)
+        .then(() => {
           this.$vs.notify({
             text: this.notification_text,
             icon: this.notification_icon,
@@ -481,8 +533,8 @@ export default {
       this.keyword = "";
     },
     linkToMyproducts() {
-      this.$router.push("/library").catch(()=>{});
-    }
+      this.$router.push("/library").catch(() => {});
+    },
   },
   computed: {
     getCurrentLanguage() {
@@ -498,6 +550,11 @@ export default {
         return this.$store.getters["notification_text"];
       },
     },
+    show_fake_menu: {
+      get() {
+        return this.$store.getters["show_fake_menu"];
+      },
+    },
 
     notification_icon: {
       get() {
@@ -510,6 +567,12 @@ export default {
         return this.$store.getters["notification_color"];
       },
     },
+
+    is_fake: {
+      get() {
+        return this.$store.getters["is_fake"];
+      },
+    },
   },
 };
 </script>
@@ -518,5 +581,4 @@ export default {
 /* .con-vs-dropdown--menu {
   width: 100%;
 } */
-
 </style>

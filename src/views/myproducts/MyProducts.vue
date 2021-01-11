@@ -89,6 +89,17 @@ export default {
         return this.$store.getters["productManage/product_list"];
       },
     },
+    is_fake: {
+      get() {
+        return this.$store.getters["is_fake"];
+      },
+    },
+  },
+
+  watch: {
+    is_fake: function(newValue, oldValue) {
+      this.getProductList();
+    },
   },
 
   /**
@@ -97,6 +108,7 @@ export default {
   created() {
     if (this.user_logged) this.getProductList();
     else this.$router.push("/login").catch(() => {});
+    this.$store.dispatch("setFakeMenu", true);
   },
   /**
    * --------------method part-------------
@@ -107,13 +119,25 @@ export default {
      */
     async getProductList() {
       this.$vs.loading({ type: "material" });
-      await this.$store.dispatch("productManage/getProductList").then(() => {
-        // this.$vs.notify({
-        //   color: this.notification_color,
-        //   text: this.notification_text,
-        //   icon: this.notification_icon,
-        // });
-      });
+      if (this.is_fake) {
+        await this.$store
+          .dispatch("productManage/getProductListDemo")
+          .then(() => {
+            // this.$vs.notify({
+            //   color: this.notification_color,
+            //   text: this.notification_text,
+            //   icon: this.notification_icon,
+            // });
+          });
+      } else {
+        await this.$store.dispatch("productManage/getProductList").then(() => {
+          // this.$vs.notify({
+          //   color: this.notification_color,
+          //   text: this.notification_text,
+          //   icon: this.notification_icon,
+          // });
+        });
+      }
       this.$vs.loading.close(this.$refs.loading);
     },
 

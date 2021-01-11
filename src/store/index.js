@@ -41,6 +41,8 @@ export default new Vuex.Store({
       got: false,
     },
     custom_warning: "#ff3300",
+    is_fake: true,
+    show_fake_menu: true,
   },
   mutations: {
     LOADING_STATUS(state, loading_status) {
@@ -80,6 +82,12 @@ export default new Vuex.Store({
     RESET_MODULE(state) {
       state.error_text = "";
     },
+    SET_FAKE(state, fake_flag) {
+      state.is_fake = fake_flag;
+    },
+    SET_FAKE_MENU(state, show_fake_menu) {
+      state.show_fake_menu = show_fake_menu;
+    },
   },
   actions: {
     updateSidebarWidth({ commit }, width) {
@@ -87,6 +95,12 @@ export default new Vuex.Store({
     },
     loadingStatus({ commit }, loading_status) {
       commit("LOADING_STATUS", loading_status);
+    },
+    setFakeData({ commit }, fake_flag) {
+      commit("SET_FAKE", fake_flag);
+    },
+    setFakeMenu({ commit }, fake_menu) {
+      commit("SET_FAKE_MENU", fake_menu);
     },
   },
   getters: {
@@ -96,5 +110,7 @@ export default new Vuex.Store({
     notification_color: (state) => state.notification_color,
     notification_icon: (state) => state.notification_icon,
     loading_status: (state) => state.loading_status,
+    is_fake: (state) => state.is_fake,
+    show_fake_menu: (state) => state.show_fake_menu,
   },
 });

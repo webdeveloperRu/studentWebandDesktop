@@ -298,9 +298,7 @@ export default {
     },
   },
 
-  created() {
-    console.log(this.logged_user);
-  },
+  created() {},
   watch: {
     getQrCode: function(newValue) {
       if (newValue) this.getEntryKeyCode();
