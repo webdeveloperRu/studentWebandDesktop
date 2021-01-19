@@ -74,14 +74,8 @@
                     controls
                     controlsList="nodownload"
                   >
-                    <source
-                      :src="current_lesson.video_url"
-                      type="video/mp4"
-                    />
-                    <source
-                      a:src="current_lesson.video_url"
-                      type="video/ogg"
-                    />
+                    <source :src="current_lesson.video_url" type="video/mp4" />
+                    <source a:src="current_lesson.video_url" type="video/ogg" />
                     Your browser does not support the video tag.
                   </video>
                   <!-- </div> -->
@@ -337,9 +331,9 @@
                     {{ timeDifference(Date.now(), comment.created_on) }}
                   </div>
                 </div>
-                <p>{{ comment.comment }}</p>
-                <vs-button size="small" type="flat">REPLY</vs-button>
-                <vs-button size="small" type="flat">EDIT</vs-button>
+                <p class="ml-4 mt-3">{{ comment.comment }}</p>
+                <vs-button  type="flat">REPLY</vs-button>
+                <vs-button  type="flat">EDIT</vs-button>
               </div>
             </vs-card>
           </vs-col>
@@ -557,8 +551,8 @@ export default {
   created() {
     this.getDownloadFileList(this.current_lesson.id);
     this.$store.dispatch("setFakeMenu", false);
-    console.log(this.current_lesson)
-    // this.getCommentsForLessonID(this.lesson_id);
+    console.log(this.current_lesson);
+    this.getCommentsForLessonID(this.lesson_id);
     if (this.current_category.sort_position == 1) this.prev_button = false;
     if (this.current_category.sort_position == this.category_list.length)
       this.next_button = false;
@@ -591,29 +585,42 @@ export default {
       this.$vs.loading({
         type: "material",
       });
-      if (this.is_fake) {
+      if (this.academy_token !== null) {
+        await this.$store
+          .dispatch("commentManage/getCommentListPreview", lesson_id)
+          .then(() => {
+            this.$vs.loading.close();
+            // this.$vs.notify({
+            //   color: this.notification_color,
+            //   text: this.notification_text,
+            //   icon: this.notification_icon,
+            // });
+          });
+      } else if (this.is_fake) {
         await this.$store
           .dispatch("commentManage/getCommentList", lesson_id)
           .then(() => {
             if (!this.status_got) {
-              this.$vs.notify({
-                color: this.notification_color,
-                text: this.notification_text,
-                icon: this.notification_icon,
-              });
+              // this.$vs.notify({
+              //   color: this.notification_color,
+              //   text: this.notification_text,
+              //   icon: this.notification_icon,
+              // });
             }
+            this.$vs.loading.close();
           });
       } else {
         await this.$store
           .dispatch("commentManage/getCommentListDemo", lesson_id)
           .then(() => {
             if (!this.status_got) {
-              this.$vs.notify({
-                color: this.notification_color,
-                text: this.notification_text,
-                icon: this.notification_icon,
-              });
+              // this.$vs.notify({
+              //   color: this.notification_color,
+              //   text: this.notification_text,
+              //   icon: this.notification_icon,
+              // });
             }
+            this.$vs.loading.close();
           });
       }
 
@@ -677,7 +684,7 @@ export default {
     clickLessonItem(current_lesson) {
       this.$store.dispatch("lessonManage/setCurrentLesson", current_lesson);
       this.getDownloadFileList(current_lesson.id);
-      // this.getCommentsForLessonID(current_lesson.id);
+      this.getCommentsForLessonID(current_lesson.id);
       if (
         this.current_lesson.sort_position >
         this.lesson_list[this.current_category.id].length - 2
@@ -701,7 +708,7 @@ export default {
         this.lesson_list[this.current_category.id][0]
       );
 
-      // this.getCommentsForLessonID(this.current_lesson.id);
+      this.getCommentsForLessonID(this.current_lesson.id);
       if (this.current_category.sort_position == 1) this.prev_button = false;
       else this.prev_button = true;
 
@@ -725,7 +732,7 @@ export default {
       this.getDownloadFileList(
         this.lesson_list[this.current_category.id][0].id
       );
-      // this.getCommentsForLessonID(this.current_lesson.id);
+      this.getCommentsForLessonID(this.current_lesson.id);
 
       if (this.current_category.sort_position == 1) this.prev_button = false;
       else this.prev_button = true;
@@ -747,7 +754,7 @@ export default {
           this.current_lesson.sort_position + 1
         ].id
       );
-      // this.getCommentsForLessonID(this.current_lesson.id);
+      this.getCommentsForLessonID(this.current_lesson.id);
       if (
         this.current_lesson.sort_position >
         this.lesson_list[this.current_category.id].length - 2
@@ -788,7 +795,7 @@ export default {
 
     downloadWithAxios(url, title) {
       this.$vs.loading({
-        container: '#loading',
+        container: "#loading",
         scale: 0.5,
         type: "material",
       });
@@ -800,10 +807,10 @@ export default {
       })
         .then((response) => {
           this.forceFileDownload(response, title);
-           this.$vs.loading.close(this.$refs.loading)
+          this.$vs.loading.close(this.$refs.loading);
         })
         .catch(() => {});
-       this.$vs.loading.close(this.$refs.loading)
+      this.$vs.loading.close(this.$refs.loading);
     },
 
     markAsComplete(param) {
@@ -851,10 +858,29 @@ export default {
     postComment() {
       var test = this.comment.replace(/\s/g, "");
       if (test != "") {
-        this.$store.dispatch("commentManage/postComment", [
-          this.current_lesson.id,
-          this.comment,
-        ]);
+        if (this.academy_token !== null) {
+          console.log('posst collaed')
+          this.$store.dispatch("commentManage/postCommentPreview", [
+            this.current_lesson.id,
+            this.comment,
+          ]).then(()=> {
+             this.getCommentsForLessonID(this.current_lesson.id);
+          })
+        } else if (this.is_fake) {
+          this.$store.dispatch("commentManage/postCommentDemo", [
+            this.current_lesson.id,
+            this.comment,
+          ]).then(()=> {
+             this.getCommentsForLessonID(this.current_lesson.id);
+          })
+        } else {
+          this.$store.dispatch("commentManage/postComment", [
+            this.current_lesson.id,
+            this.comment,
+          ]).then(()=> {
+             this.getCommentsForLessonID(this.current_lesson.id);
+          })
+        }
       }
       this.comment = "";
     },

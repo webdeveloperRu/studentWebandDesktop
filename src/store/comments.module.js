@@ -64,6 +64,33 @@ export const commentManage = {
     },
 
     /**
+     * ---------get comment list real-------------------
+     */
+    getCommentListPreview({ commit }, lesson_id) {
+      return CommentService.getCommentListPreview(lesson_id).then(
+        (res) => {
+          if (res.status === 200) {
+            commit("getCommentListSuccess", res);
+          } else {
+            if (res.response == undefined)
+              commit("NETWORK_ERROR", null, {
+                root: true,
+              });
+            else
+              commit("REQUEST_FAILED", res.response, {
+                root: true,
+              });
+          }
+        },
+        (error) => {
+          commit("REQUEST_FAILED", error.response, {
+            root: true,
+          });
+        }
+      );
+    },
+
+    /**
      * ---------post comment list-------------------
      */
     postComment({ commit }, [lesson_id, comment]) {
@@ -116,6 +143,34 @@ export const commentManage = {
         }
       );
     },
+
+    /**
+     * ---------post comment list-------------------
+     */
+    postCommentPreview({ commit }, [lesson_id, comment]) {
+      return CommentService.postCommentPreview(lesson_id, comment).then(
+        (res) => {
+          if (res.status === 200) {
+            commit("postCommentSuccess", res);
+          } else {
+            if (res.response == undefined)
+              commit("NETWORK_ERROR", null, {
+                root: true,
+              });
+            else
+              commit("REQUEST_FAILED", res.response, {
+                root: true,
+              });
+          }
+        },
+        (error) => {
+          commit("REQUEST_FAILED", error.response, {
+            root: true,
+          });
+        }
+      );
+    },
+
   },
 
   getters: {
