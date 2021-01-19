@@ -381,19 +381,23 @@
                 class="d-flex"
                 style="align-items: center; justify-content: flex-start"
               >
-                <vs-avatar
+                <!-- <vs-avatar
                   size="70px"
                   :src="current_product.instructor.headshot"
+                ></vs-avatar> -->
+                 <vs-avatar
+                  size="70px"
                 ></vs-avatar>
                 <div class="ml-3">
                   <div class="mb-1">
-                    <strong>{{ current_product.instructor.name }}</strong>
+                    John Doe
+                    <!-- <strong>{{ current_product.instructor.name }}</strong> -->
                   </div>
                   <div style="color: dodgerblue">Instructor</div>
                 </div>
               </div>
               <div class="mt-3">
-                {{ current_product.instructor.description }}
+                <!-- {{ current_product.instructor.description }} -->
               </div>
             </vs-card>
           </vs-col>
@@ -530,11 +534,17 @@ export default {
         return this.$store.getters["is_fake"];
       },
     },
+
+    academy_token: {
+      get() {
+        return JSON.parse(localStorage.getItem("academy_token"));
+      },
+    },
   },
 
   created() {
     this.$store.dispatch("setFakeMenu", false);
-    this.getCommentsForLessonID(this.lesson_id);
+    // this.getCommentsForLessonID(this.lesson_id);
     if (this.current_category.sort_position == 0) this.prev_button = false;
     if (this.current_category.sort_position == this.category_list.length - 1)
       this.next_button = false;
@@ -593,7 +603,17 @@ export default {
         type: "material",
       });
 
-      if (this.is_fake) {
+      if (this.academy_token !== null) {
+        await this.$store
+          .dispatch("lessonManage/getLessonListPreview", category_id)
+          .then(() => {
+            // this.$vs.notify({
+            //   color: this.notification_color,
+            //   text: this.notification_text,
+            //   icon: this.notification_icon,
+            // });
+          });
+      } else if  (this.is_fake) {
         await this.$store
           .dispatch("lessonManage/getLessonListDemo", category_id)
           .then(() => {
@@ -634,7 +654,7 @@ export default {
 
     clickLessonItem(current_lesson) {
       this.$store.dispatch("lessonManage/setCurrentLesson", current_lesson);
-      this.getCommentsForLessonID(current_lesson.id);
+      // this.getCommentsForLessonID(current_lesson.id);
       if (
         this.current_lesson.sort_position >
         this.lesson_list[this.current_category.id].length - 2
@@ -658,7 +678,7 @@ export default {
         this.lesson_list[this.current_category.id][0]
       );
 
-      this.getCommentsForLessonID(this.current_lesson.id);
+      // this.getCommentsForLessonID(this.current_lesson.id);
       if (this.current_category.sort_position == 0) this.prev_button = false;
       else this.prev_button = true;
 
@@ -679,7 +699,7 @@ export default {
         "lessonManage/setCurrentLesson",
         this.lesson_list[this.current_category.id][0]
       );
-      this.getCommentsForLessonID(this.current_lesson.id);
+      // this.getCommentsForLessonID(this.current_lesson.id);
 
       if (this.current_category.sort_position == 0) this.prev_button = false;
       else this.prev_button = true;
@@ -696,7 +716,7 @@ export default {
           this.current_lesson.sort_position + 1
         ]
       );
-      this.getCommentsForLessonID(this.current_lesson.id);
+      // this.getCommentsForLessonID(this.current_lesson.id);
       if (
         this.current_lesson.sort_position >
         this.lesson_list[this.current_category.id].length - 2

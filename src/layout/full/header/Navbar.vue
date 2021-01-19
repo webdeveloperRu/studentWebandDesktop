@@ -494,7 +494,6 @@ export default {
   }),
 
   created() {
-    console.log(this.current_product)
     this.fake_data = this.is_fake;
   },
 

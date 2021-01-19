@@ -589,21 +589,6 @@ export default {
         "/view-lesson/" + this.lesson_list[this.category_list[0].id][0].id
       );
 
-      // this.getCategoriesForProductID(current_product.id)
-      // .then(() => {
-      //    this.$store.dispatch(
-      //       "categoryManage/setCurrentCategory",
-      //       this.category_list[0]
-      //     );
-      //     this.getLessonsForCategoryID(this.category_list[0].id)
-      //     .then(() => {
-      //       this.$store.dispatch(
-      //         "lessonManage/setCurrentLesson",
-      //         this.lesson_list[this.category_list[0].id][0]
-      //       );
-      //        this.$router.push("/view-lesson/" + this.lesson_list[this.category_list[0].id][0].id);
-      //     });
-      //   });
     },
   },
 };

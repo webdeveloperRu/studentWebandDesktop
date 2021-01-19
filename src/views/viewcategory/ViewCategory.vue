@@ -1,5 +1,42 @@
 <template>
-  <div>
+ <div
+    v-bind:style="{
+      'margin-top': product_margin_top,
+    }"
+  >
+    <div
+      class="category-banner"
+      v-bind:style="{
+        'background-image': current_product.customize_hero.background_image,
+        'text-align': hero_alignment,
+      }"
+    >
+      <div
+        v-bind:style="{
+          'padding-top': hero_spacing,
+          'padding-bottom': hero_spacing,
+          background: current_product.customize_hero.overlay_color,
+        }"
+      >
+        <p
+          class="producttitle-category"
+          v-bind:style="{ color: current_product.customize_hero.text_color }"
+        >
+          {{ current_product.title }}
+        </p>
+        <p
+          class="product-description-category"
+          v-bind:style="{ color: current_product.customize_hero.text_color }"
+        >
+          {{ current_product.description }}
+        </p>
+        <vs-button @click.native="startCourse(current_product)"
+          >Start Course</vs-button
+        >
+      </div>
+    </div>
+    <br />
+    <br />
     <vs-row vs-justify="center" class="primary-font">
       <vs-col
         type="flex"
@@ -84,8 +121,8 @@
                     code-toggler
                   >
                     <h4 class="mb-2">{{ lesson.title }}</h4>
-                    <div class="category-description" :title="lesson.body">
-                      {{ lesson.body }}
+                    <div class="category-description" >
+                      <span v-html="lesson.body"></span>
                     </div>
                   </vs-col>
                   <vs-col
@@ -141,19 +178,23 @@
                 class="d-flex"
                 style="align-items: center; justify-content: flex-start"
               >
-                <vs-avatar
+                <!-- <vs-avatar
                   size="70px"
                   :src="current_product.instructor.headshot"
+                ></vs-avatar> -->
+                 <vs-avatar
+                  size="70px"
                 ></vs-avatar>
                 <div class="ml-3">
                   <div class="mb-1">
-                    <strong>{{ current_product.instructor.name }}</strong>
+                    John Doe
+                    <!-- <strong>{{ current_product.instructor.name }}</strong> -->
                   </div>
                   <div style="color: dodgerblue">Instructor</div>
                 </div>
               </div>
               <div class="mt-3">
-                {{ current_product.instructor.description }}
+                <!-- {{ current_product.instructor.description }} -->
               </div>
             </vs-card>
           </vs-col>
@@ -242,6 +283,82 @@ export default {
         return this.$store.getters["is_fake"];
       },
     },
+
+    academy_token: {
+      get() {
+        return JSON.parse(localStorage.getItem("academy_token"));
+      },
+    },
+    product_margin_top: {
+      get() {
+        if (this.product_id !== "") {
+          if (
+            this.current_product.customize_header.show_announcement &&
+            this.current_product.customize_header.show_header
+          ) {
+            return "50px";
+          } else return "0px";
+        } else return "0px";
+      },
+    },
+
+    hero_alignment: {
+      get() {
+        let value = "";
+        switch (this.current_product.customize_hero.alignment) {
+          case "Centered":
+            value = "center";
+            break;
+          case "Left":
+            value = "left";
+            break;
+          case "Right":
+            value = "right";
+            break;
+        }
+        return value;
+      },
+    },
+
+    hero_spacing: {
+      get() {
+        let value = "";
+        switch (this.current_product.customize_hero.spacing) {
+          case "Small":
+            value = "30px";
+            break;
+          case "Medium":
+            value = "50px";
+            break;
+          case "Large":
+            value = "100px";
+            break;
+          case "Extra Small":
+            value = "10px";
+            break;
+        }
+        return value;
+      },
+    },
+
+    welcome_text_aligment: {
+      get() {
+        let value = "";
+        switch (this.current_product.customize_wellcome.text_alignment) {
+          case "Centered":
+            value = "center";
+            break;
+          case "Left":
+            value = "left";
+            break;
+          case "Right":
+            value = "right";
+            break;
+        }
+        return value;
+      },
+    },
+
   },
   watch: {
     is_fake: function(newValue, oldValue) {
@@ -259,7 +376,17 @@ export default {
   methods: {
     async getLessonsForCategoryID(category_id) {
       this.$vs.loading({ type: "material" });
-      if (this.is_fake) {
+     if (this.academy_token !== null) {
+        await this.$store
+          .dispatch("lessonManage/getLessonListPreview", category_id)
+          .then(() => {
+            // this.$vs.notify({
+            //   color: this.notification_color,
+            //   text: this.notification_text,
+            //   icon: this.notification_icon,
+            // });
+          });
+      } else if (this.is_fake) {
         await this.$store
           .dispatch("lessonManage/getLessonListDemo", category_id)
           .then(() => {
@@ -316,6 +443,23 @@ export default {
     backToCurrentProduct() {
       this.$router.push("/product/" + this.current_product.id);
     },
+     startCourse(current_product) {
+      this.$store.dispatch("productManage/setCurrentProduct", current_product);
+
+      this.$store.dispatch(
+        "categoryManage/setCurrentCategory",
+        this.category_list[0]
+      );
+      this.$store.dispatch(
+        "lessonManage/setCurrentLesson",
+        this.lesson_list[this.category_list[0].id][0]
+      );
+
+      this.$router.push(
+        "/view-lesson/" + this.lesson_list[this.category_list[0].id][0].id
+      );
+
+    },
   },
 };
 </script>
@@ -324,13 +468,19 @@ export default {
   margin: 0 -20px;
   margin-top: -24px;
   background-position: center;
-  background-image: url("../../assets/images/big/img1.jpg");
   background-repeat: no-repeat;
   background-size: cover;
-  height: 300px;
-  display: flex;
   align-items: center;
   justify-content: center;
+}
+.producttitle-category {
+  color: white;
+  font-size: 50px;
+  font-weight: 600;
+}
+.product-description-category {
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .product-image {
