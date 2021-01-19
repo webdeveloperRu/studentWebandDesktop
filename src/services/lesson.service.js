@@ -25,6 +25,23 @@ class LessonService {
   }
 
   /**
+   * ---------get downlaods-----------------
+   */
+
+  getDownloadFileListPreview(lesson_id) {
+    return axios
+      .get(apiurl.API_ACADEMY_URL + 'downloads/' + lesson_id, {
+        headers: authAcademyHeader()
+      })
+      .then(response => {
+        return response;
+      })
+      .catch(err => {
+        return err;
+      });
+
+  }
+  /**
    * ---------get lesson list---------
    */
   getLessonListDemo(category_id) {

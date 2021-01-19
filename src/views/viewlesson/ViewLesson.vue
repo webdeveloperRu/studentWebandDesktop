@@ -191,16 +191,16 @@
                       v-if="prev_button"
                       color="dark"
                       type="filled"
-                      size="small"
-                      @click="prevCategory"
+                      size="15"
+                      @click.native="prevCategory"
                       >Previous Category</vs-button
                     >
                     <vs-button
                       v-if="next_button"
                       color="dark"
                       type="filled"
-                      size="small"
-                      @click="nextCategory"
+                      size="15"
+                      @click.native="nextCategory"
                       >Next Category</vs-button
                     >
                   </div>
@@ -222,7 +222,7 @@
             <vs-card>
               <div
                 v-if="current_lesson.lessons_completed"
-                style="background-color: #2962FF; color: white;"
+                style="background-color: #2962ff; color: white"
                 class="mark-as-complete mb-3 w-100 p-2"
                 @click="markAsComplete(false)"
               >
@@ -238,11 +238,11 @@
               <vs-row
                 v-if="
                   current_lesson.lessons_completed &&
-                    endlesson &&
-                    show_congratulation
+                  endlesson &&
+                  show_congratulation
                 "
                 class="p-2 mb-3"
-                style="background-color: #f6f6f6; margin: 0 auto;"
+                style="background-color: #f6f6f6; margin: 0 auto"
                 vs-align="center"
                 vs-justify="center"
               >
@@ -272,7 +272,7 @@
                   vs-sm="12"
                   vs-align="center"
                   vs-justify="center"
-                  style="color: dodgerblue;cursor: pointer; font-size: 12px"
+                  style="color: dodgerblue; cursor: pointer; font-size: 12px"
                 >
                   <div @click="nextLesson" style="text-align: center">
                     Next Lesson
@@ -293,7 +293,7 @@
                 {{ current_category.name }}
               </h4>
               <p class="lesson-name">
-                {{ current_lesson.body }}
+                <span v-html="current_lesson.body"></span>
               </p>
             </vs-card>
             <vs-card>
@@ -306,7 +306,7 @@
                 v-model="comment"
                 class="w-100 mt-3"
               />
-              <vs-button class="mt-3" @click="postComment"
+              <vs-button class="mt-3" @click.native="postComment"
                 >Post Comment</vs-button
               >
               <vs-divider></vs-divider>
@@ -355,7 +355,7 @@
             <vs-card>
               <h4 class="mb-3">Downloads</h4>
               <div
-                v-for="(filesrc, index) in filesrcs"
+                v-for="(filesrc, index) in download_files"
                 :key="index"
                 class="d-flex mt-2"
                 style="align-items: center; justify-content: flex-start"
@@ -368,8 +368,9 @@
                 <div class="ml-3">
                   <div style="color: dodgerblue">
                     <a
-                      v-text="filesrc.title"
-                      @click="downloadWithAxios(filesrc.src, filesrc.title)"
+                      style="cursor: pointer"
+                      v-text="filesrc.name"
+                      @click="downloadWithAxios(filesrc.url, filesrc.name)"
                     />
                   </div>
                 </div>
@@ -385,9 +386,7 @@
                   size="70px"
                   :src="current_product.instructor.headshot"
                 ></vs-avatar> -->
-                 <vs-avatar
-                  size="70px"
-                ></vs-avatar>
+                <vs-avatar size="70px"></vs-avatar>
                 <div class="ml-3">
                   <div class="mb-1">
                     John Doe
@@ -448,7 +447,7 @@ export default {
   }),
 
   computed: {
-    lesson_id: function() {
+    lesson_id: function () {
       var id = this.$route.params.lesson_id;
       return id.slice(0, id.length);
     },
@@ -540,13 +539,20 @@ export default {
         return JSON.parse(localStorage.getItem("academy_token"));
       },
     },
+
+    download_files: {
+      get() {
+        return this.$store.getters["lessonManage/downloadfile_list"];
+      },
+    },
   },
 
   created() {
+    this.getDownloadFileList(this.current_lesson.id);
     this.$store.dispatch("setFakeMenu", false);
     // this.getCommentsForLessonID(this.lesson_id);
-    if (this.current_category.sort_position == 0) this.prev_button = false;
-    if (this.current_category.sort_position == this.category_list.length - 1)
+    if (this.current_category.sort_position == 1) this.prev_button = false;
+    if (this.current_category.sort_position == this.category_list.length)
       this.next_button = false;
 
     if (
@@ -565,6 +571,14 @@ export default {
   // },
 
   methods: {
+    getDownloadFileList(lesson_id) {
+      if (this.academy_token !== null) {
+        this.$store
+          .dispatch("lessonManage/getDownloadFileListPreview", lesson_id)
+          .then(() => {});
+      }
+    },
+
     async getCommentsForLessonID(lesson_id) {
       this.$vs.loading({
         type: "material",
@@ -613,7 +627,7 @@ export default {
             //   icon: this.notification_icon,
             // });
           });
-      } else if  (this.is_fake) {
+      } else if (this.is_fake) {
         await this.$store
           .dispatch("lessonManage/getLessonListDemo", category_id)
           .then(() => {
@@ -654,6 +668,7 @@ export default {
 
     clickLessonItem(current_lesson) {
       this.$store.dispatch("lessonManage/setCurrentLesson", current_lesson);
+      this.getDownloadFileList(current_lesson.id)
       // this.getCommentsForLessonID(current_lesson.id);
       if (
         this.current_lesson.sort_position >
@@ -668,7 +683,7 @@ export default {
     prevCategory() {
       this.$store.dispatch(
         "categoryManage/setCurrentCategory",
-        this.category_list[this.current_category.sort_position - 1]
+        this.category_list[this.current_category.sort_position - 2]
       );
 
       // this.getLessonsForCategoryID(this.current_category.id);
@@ -679,10 +694,10 @@ export default {
       );
 
       // this.getCommentsForLessonID(this.current_lesson.id);
-      if (this.current_category.sort_position == 0) this.prev_button = false;
+      if (this.current_category.sort_position == 1) this.prev_button = false;
       else this.prev_button = true;
 
-      if (this.current_category.sort_position == this.category_list.length - 1)
+      if (this.current_category.sort_position == this.category_list.length)
         this.next_button = false;
       else this.next_button = true;
     },
@@ -690,7 +705,7 @@ export default {
     nextCategory() {
       this.$store.dispatch(
         "categoryManage/setCurrentCategory",
-        this.category_list[this.current_category.sort_position + 1]
+        this.category_list[this.current_category.sort_position]
       );
 
       // this.getLessonsForCategoryID(this.current_category.id);
@@ -699,12 +714,15 @@ export default {
         "lessonManage/setCurrentLesson",
         this.lesson_list[this.current_category.id][0]
       );
+      this.getDownloadFileList(
+        this.lesson_list[this.current_category.id][0].id
+      );
       // this.getCommentsForLessonID(this.current_lesson.id);
 
-      if (this.current_category.sort_position == 0) this.prev_button = false;
+      if (this.current_category.sort_position == 1) this.prev_button = false;
       else this.prev_button = true;
 
-      if (this.current_category.sort_position == this.category_list.length - 1)
+      if (this.current_category.sort_position == this.category_list.length)
         this.next_button = false;
       else this.next_button = true;
     },
@@ -715,6 +733,11 @@ export default {
         this.lesson_list[this.current_category.id][
           this.current_lesson.sort_position + 1
         ]
+      );
+      this.getDownloadFileList(
+        this.lesson_list[this.current_category.id][
+          this.current_lesson.sort_position + 1
+        ].id
       );
       // this.getCommentsForLessonID(this.current_lesson.id);
       if (
@@ -756,6 +779,7 @@ export default {
     },
 
     downloadWithAxios(url, title) {
+      console.log(url);
       Axios({
         method: "get",
         url,
@@ -812,7 +836,6 @@ export default {
     postComment() {
       var test = this.comment.replace(/\s/g, "");
       if (test != "") {
-    
         this.$store.dispatch("commentManage/postComment", [
           this.current_lesson.id,
           this.comment,

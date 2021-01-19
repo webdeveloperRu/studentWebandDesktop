@@ -5,6 +5,7 @@ const initialState = {
   current_lesson: [],
   current_category_id: "",
   search_result: [],
+  downloadfile_list: []
 };
 export const lessonManage = {
   namespaced: true,
@@ -168,6 +169,40 @@ export const lessonManage = {
         }
       );
     },
+
+     /**
+     * ---------get download file list------------
+     */
+    getDownloadFileListPreview({
+      commit
+    }, lesson_id) {
+      return LessonService.getDownloadFileListPreview(lesson_id).then(
+        res => {
+          if (res.status === 200) {
+            commit('getDownloadFileListSuccess', res);
+          } else {
+            if (res.response == undefined)
+              commit('NETWORK_ERROR', null, {
+                root: true
+              });
+            else {
+              commit("REQUEST_FAILED", res.response, {
+                root: true
+              });
+            }
+          }
+        },
+        error => {
+          commit("REQUEST_FAILED", error.response, {
+            root: true
+          });
+        }
+      );
+    },
+
+    
+
+
   },
 
   getters: {
@@ -179,6 +214,15 @@ export const lessonManage = {
   },
 
   mutations: {
+    getDownloadFileListSuccess(state, res) {
+      store.state.status = {
+        got: true
+      };
+      store.state.notification_text = 'download file list got';
+      store.state.notification_icon = 'info';
+      store.state.notification_color = 'primary';
+      state.downloadfile_list = res.data.items
+    },
     setCategoryID(state, category_id) {
       state.current_category_id = category_id;
     },
