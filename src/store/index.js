@@ -43,6 +43,7 @@ export default new Vuex.Store({
     custom_warning: "#ff3300",
     is_fake: true,
     show_fake_menu: true,
+    academy_token: "",
   },
   mutations: {
     LOADING_STATUS(state, loading_status) {
@@ -54,6 +55,10 @@ export default new Vuex.Store({
       state.notification_icon = "warning";
       state.notification_color = state.custom_warning;
       state.notification_text = error.data.message;
+    },
+    ACADEMY_TOKEN(state, academy_token) {
+      state.academy_token = academy_token
+      localStorage.setItem("academy_token", JSON.stringify(academy_token))
     },
     // Network Error
     NETWORK_ERROR(state) {
@@ -112,5 +117,6 @@ export default new Vuex.Store({
     loading_status: (state) => state.loading_status,
     is_fake: (state) => state.is_fake,
     show_fake_menu: (state) => state.show_fake_menu,
+    academy_token: (state) => state.academy_token
   },
 });

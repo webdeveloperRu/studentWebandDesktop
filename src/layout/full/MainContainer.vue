@@ -54,29 +54,32 @@ export default {
     updateTopbarColor(val) {
       this.topbarColor = val;
     },
-
-   
   },
 
   updated() {
 
-    if(this.logged_user == null){
-        this.$router.replace('/login')
-      }
+    if (this.academy_token !== null) return;
+    if (this.logged_user == null) {
+      this.$router.replace("/login");
+    }
   },
   beforeUpdate() {
 
-    if(this.logged_user == null){
-        this.$router.replace('/login')
-      }
-  },
-  beforeCreate() {
-   if(this.logged_user == null){
-        this.$router.replace('/login')
+    if (this.academy_token !== null) return;
+    if (this.logged_user == null) {
+      this.$router.replace("/login");
     }
- },
+  },
+
+  created() {
+  },
 
   computed: {
+    academy_token: {
+      get() {
+        return JSON.parse(localStorage.getItem("academy_token"));
+      },
+    },
     sidebarWidth: function () {
       return this.$store.state.sidebarWidth;
     },
@@ -99,11 +102,11 @@ export default {
       return "default";
     },
     logged_user: {
-      get(){
-        return this.$store.getters["auth/logged_user"]
-      }
+      get() {
+        return this.$store.getters["auth/logged_user"];
+      },
     },
-     status_got: {
+    status_got: {
       get() {
         return this.$store.getters["status_got"];
       },

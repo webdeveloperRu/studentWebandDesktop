@@ -138,9 +138,17 @@ export default {
         return this.$store.getters["auth/logged_user"];
       },
     },
+    academy_token: {
+      get() {
+        return JSON.parse(localStorage.getItem("academy_token"));
+      },
+    },
+
   },
   created() {
-    if (this.logged_user) this.$router.push("./library");
+    if (this.logged_user) this.$router.push("/library");
+    if (this.academy_token != null)   this.$router.push('/library').catch(() => {});
+
   },
 
   methods: {

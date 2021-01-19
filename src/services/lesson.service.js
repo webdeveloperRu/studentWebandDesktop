@@ -2,7 +2,11 @@ import axios from "axios";
 import apiurl from "./base_api_url";
 import store from "../store";
 import { authHeader } from "./authHeader";
+import { authAcademyHeader } from "./authAcademyHeader";
+
 const API_URL = apiurl.API_URL + "student/";
+const API_ACADEMY_URL = apiurl.API_ACADEMY_URL ;
+
 class LessonService {
   /**
    * ---------get lesson list---------
@@ -27,6 +31,22 @@ class LessonService {
     return axios
       .get(API_URL + category_id + "/lessons?demo", {
         headers: authHeader(),
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+
+   /**
+   * ---------get lesson list---------
+   */
+  getLessonListPreview(category_id) {
+    return axios
+      .get(API_ACADEMY_URL + "category/" + category_id + "/lessons", {
+        headers: authAcademyHeader(),
       })
       .then((response) => {
         return response;

@@ -34,6 +34,33 @@ export const categoryManage = {
       );
     },
 
+        /**
+     * ---------get category for id -----------------
+     */
+    getCategoryByProductIDPreview({ commit }, category_id) {
+      return CategoryService.getCategoryByProductIDPreview(category_id).then(
+        (res) => {
+          if (res.status === 200) {
+            commit("getCategoryByProductIDSuccess", res);
+          } else {
+            if (res.response == undefined)
+              commit("NETWORK_ERROR", null, {
+                root: true,
+              });
+            else
+              commit("REQUEST_FAILED", res.response, {
+                root: true,
+              });
+          }
+        },
+        (error) => {
+          commit("REQUEST_FAILED", error.response, {
+            root: true,
+          });
+        }
+      );
+    },
+
     /**
      * ---------get category for id demo-----------------
      */

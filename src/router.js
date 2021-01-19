@@ -88,7 +88,7 @@ const router = new Router({
           component: () => import("./views/myproducts/MyProducts.vue"),
         },
         {
-          path: "/product/:id",
+          path: "/product/:product_id",
           name: "Product",
           index: 4,
           i18n: "Product",
@@ -109,14 +109,14 @@ const router = new Router({
           component: () => import("./views/settings/Settings.vue"),
         },
         {
-          path: "/view-category/:id",
+          path: "/view-category/:category_id",
           name: "ViewCategory",
           index: 7,
           i18n: "Starterkit",
           component: () => import("./views/viewcategory/ViewCategory.vue"),
         },
         {
-          path: "/view-lesson/:id",
+          path: "/view-lesson/:lesson_id",
           name: "ViewLesson",
           index: 8,
           i18n: "Starterkit",

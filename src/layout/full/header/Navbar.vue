@@ -1,11 +1,40 @@
 <template>
   <header class="gridx">
+   <vs-navbar
+      class="product-announcement topnavbar"
+      style="min-height:50px"
+      v-bind:style="{
+        background: current_product.customize_header.announcement_color,
+        color: current_product.customize_header.announcement_text_color,
+      }"
+    >
+      <div
+        class="product-announcement-text"
+        @click="linkToAnnouncementUrl"
+        v-if="current_product.customize_header.announcement_new_window"
+      >
+        {{ current_product.customize_header.announcement_text }}
+      </div>
+      <a
+        v-if="!current_product.customize_header.announcement_new_window"
+        class="product-announcement-text"
+        :href="current_product.customize_header.announcement_url"
+        v-bind:style="{
+          color: current_product.customize_header.announcement_text_color,
+        }"
+      >
+        {{ current_product.customize_header.announcement_text }}
+      </a>
+    </vs-navbar>
     <vs-navbar
       v-model="indexActive"
       :color="topbarColor"
       class="topnavbar"
       text-color="rgba(255,255,255,0.7)"
       active-text-color="rgba(255,255,255,1)"
+      v-bind:style="{
+        'margin-top': navbar_header_height,
+      }"
     >
       <!---
       Template logo
@@ -220,6 +249,7 @@
         vs-trigger-click
         left
         class="cursor-pointer pr-2 pl-2 ml-1 mr-md-3"
+        v-if="logged_user !== null"
       >
         <a class="text-white-dark" href="#">
           <!-- <img
@@ -255,7 +285,7 @@
                   size="60px"
                   v-if="
                     logged_user.data.avatar != null ||
-                      logged_user.data.avatar != ''
+                    logged_user.data.avatar != ''
                   "
                   :src="logged_user.data.avatar"
                 ></vs-avatar>
@@ -272,7 +302,7 @@
                 <p
                   v-if="
                     logged_user.data.email != null ||
-                      logged_user.data.email != ''
+                    logged_user.data.email != ''
                   "
                   class="mb-0"
                 >
@@ -297,7 +327,7 @@
             <!-- <hr class="mb-1" /> -->
             <vs-dropdown-item
               @click="activeTwoFactorSetup = true"
-              style="padding:5px,0px;"
+              style="padding: 5px, 0px"
             >
               <div>
                 <i class="mr-2 mdi mdi-key-plus"></i>
@@ -309,9 +339,9 @@
               {{ user.dditem4 }}
             </vs-dropdown-item>
             <vs-dropdown-item @click="setFakeData" v-if="show_fake_menu">
-              <vs-checkbox class="justify-content-start" v-model="fake_data"
-                >{{ user.dditem5 }}{{ current_route }}</vs-checkbox
-              >
+              <vs-checkbox class="justify-content-start" v-model="fake_data">{{
+                user.dditem5
+              }}</vs-checkbox>
             </vs-dropdown-item>
             <hr class="mt-1" />
             <vs-button
@@ -325,6 +355,7 @@
           </div>
         </vs-dropdown-menu>
       </vs-dropdown>
+      <vs-avatar v-if="logged_user == null" size="50px"></vs-avatar>
     </vs-navbar>
     <!--//////////////////////////
       Two Factor Authentication
@@ -336,9 +367,11 @@
       class="two-factor-auth-setup"
       fullscreen
     >
-      <TwoFactorAuthSetup
-        :getQrCode="activeTwoFactorSetup"
-      ></TwoFactorAuthSetup>
+      <div v-if="logged_user != null">
+        <TwoFactorAuthSetup
+          :getQrCode="activeTwoFactorSetup"
+        ></TwoFactorAuthSetup>
+      </div>
     </vs-popup>
   </header>
 </template>
@@ -465,6 +498,12 @@ export default {
   },
 
   methods: {
+    linkToAnnouncementUrl() {
+      window.open(
+        this.current_product.customize_header.announcement_url,
+        "_blank"
+      );
+    },
     //This is for sidebar trigger in mobile
     activeSidebar() {
       this.$store.commit("TOGGLE_SIDEBAR_ACTIVE", true);
@@ -537,6 +576,12 @@ export default {
     },
   },
   computed: {
+
+    current_product:{
+      get() {
+        return this.$store.getters["productManage/current_product"];
+      }
+    },
     getCurrentLanguage() {
       const locale = this.$i18n.locale;
       if (locale == "en") return { lang: "English" };
@@ -573,12 +618,47 @@ export default {
         return this.$store.getters["is_fake"];
       },
     },
+    product_id: function () {
+      var id = this.$route.params.product_id;
+      if (id !== undefined) return id.slice(0, id.length);
+      else return "";
+    },
+    category_id: function () {
+      var id = this.$route.params.category_id;
+      if (id !== undefined) return id.slice(0, id.length);
+      else return "";
+    },
+    lesson_id: function () {
+      var id = this.$route.params.lesson_id;
+      if (id !== undefined) return id.slice(0, id.length);
+      else return "";
+    },
+    navbar_header_height: {
+       get() {
+        if (this.product_id !== "" || this.category_id !=="" || this.lesson_id !== "") {
+          if (this.current_product.customize_header.show_announcement && this.current_product.customize_header.show_header) {
+            return "50px";
+          } else return "0px";
+        }else return "0px"
+      },
+    }
   },
 };
 </script>
 
-<style>
-/* .con-vs-dropdown--menu {
+<style lang="scss">
+.product-announcement {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
   width: 100%;
-} */
+  z-index: 101;
+}
+.product-announcement-text {
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
 </style>

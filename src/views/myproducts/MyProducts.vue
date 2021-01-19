@@ -36,7 +36,7 @@
             color="primary"
             type="border"
             class="view-product"
-            @click="viewProduct(product.id)"
+            @click.native="viewProduct(product.id)"
             >View Product</vs-button
           >
         </vs-card>
@@ -94,10 +94,15 @@ export default {
         return this.$store.getters["is_fake"];
       },
     },
+    academy_token: {
+      get() {
+        return JSON.parse(localStorage.getItem("academy_token"));
+      },
+    },
   },
 
   watch: {
-    is_fake: function(newValue, oldValue) {
+    is_fake: function () {
       this.getProductList();
     },
   },
@@ -106,8 +111,13 @@ export default {
    * --------------created part-------------
    */
   created() {
-    if (this.user_logged) this.getProductList();
-    else this.$router.push("/login").catch(() => {});
+    if (this.academy_token != null) {
+      console.log("takn linekldsf")
+      this.getProductList();
+    } else {
+      if (this.user_logged) this.getProductList();
+      else this.$router.push("/login").catch(() => {});
+    }
     this.$store.dispatch("setFakeMenu", true);
   },
   /**
@@ -119,7 +129,11 @@ export default {
      */
     async getProductList() {
       this.$vs.loading({ type: "material" });
-      if (this.is_fake) {
+      if (this.academy_token !== null) {
+        await this.$store
+          .dispatch("productManage/getProductListPreview")
+          .then(() => {});
+      } else if (this.is_fake) {
         await this.$store
           .dispatch("productManage/getProductListDemo")
           .then(() => {
@@ -141,7 +155,19 @@ export default {
       this.$vs.loading.close(this.$refs.loading);
     },
 
+    /**
+     * --------------get ProductList-------------
+     */
+
     viewProduct(product_id) {
+      for (let i = 0; i < this.product_list.length; i++) {
+        if (this.product_list[i].id == product_id) {
+          this.$store.dispatch(
+            "/setCurrentProduct",
+            this.product_list[i]
+          );
+        }
+      }
       this.$router.push("/product/" + product_id);
     },
   },

@@ -78,6 +78,40 @@ export const lessonManage = {
       );
     },
 
+    /**
+     * ---------get lesson list preview-------------------
+     */
+    getLessonListPreview({ commit }, category_id) {
+      return LessonService.getLessonListPreview(category_id).then(
+        (res) => {
+          if (res.status === 200) {
+            commit("setCategoryID", category_id);
+            commit("getLessonListSuccess", {
+              res,
+              category_id,
+            });
+          } else {
+            if (res.response == undefined)
+              commit("NETWORK_ERROR", null, {
+                root: true,
+              });
+            else {
+              commit("REQUEST_FAILED", res.response, {
+                root: true,
+              });
+              commit("initCurrentCategoryID");
+            }
+          }
+        },
+        (error) => {
+          commit("REQUEST_FAILED", error.response, {
+            root: true,
+          });
+          commit("initCurrentCategoryID");
+        }
+      );
+    },
+
     setCurrentLesson({ commit }, lesson) {
       commit("setCurrentLesson", lesson);
     },

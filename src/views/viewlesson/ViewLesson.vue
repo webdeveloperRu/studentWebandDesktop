@@ -445,7 +445,7 @@ export default {
 
   computed: {
     lesson_id: function() {
-      var id = this.$route.params.id;
+      var id = this.$route.params.lesson_id;
       return id.slice(0, id.length);
     },
 
@@ -792,8 +792,7 @@ export default {
     postComment() {
       var test = this.comment.replace(/\s/g, "");
       if (test != "") {
-        // if not space string only...  ;)
-        // console.log("do something for post");
+    
         this.$store.dispatch("commentManage/postComment", [
           this.current_lesson.id,
           this.comment,

@@ -69,6 +69,37 @@ export const productManage = {
         }
       );
     },
+
+    
+    /**
+     * ---------get product list preview-------------------
+     */
+    getProductListPreview({ commit }) {
+      return ProductService.getProductListPreview().then(
+        (res) => {
+          if (res.status === 200) {
+            commit("getProductListSuccess", res);
+          } else {
+            if (res.response == undefined)
+              commit("NETWORK_ERROR", null, {
+                root: true,
+              });
+            else {
+              commit("REQUEST_FAILED", res.response, {
+                root: true,
+              });
+              commit("initProductList");
+            }
+          }
+        },
+        (error) => {
+          commit("REQUEST_FAILED", error.response, {
+            root: true,
+          });
+          commit("initProductList");
+        }
+      );
+    },
     setCurrentProduct({ commit }, product) {
       commit("setCurrentProduct", product);
     },
