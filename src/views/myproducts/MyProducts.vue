@@ -112,7 +112,6 @@ export default {
    */
   created() {
     if (this.academy_token != null) {
-      console.log("takn linekldsf")
       this.getProductList();
     } else {
       if (this.user_logged) this.getProductList();
@@ -163,7 +162,7 @@ export default {
       for (let i = 0; i < this.product_list.length; i++) {
         if (this.product_list[i].id == product_id) {
           this.$store.dispatch(
-            "/setCurrentProduct",
+            "productManage/setCurrentProduct",
             this.product_list[i]
           );
         }

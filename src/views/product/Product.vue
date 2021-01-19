@@ -399,7 +399,6 @@ export default {
   },
   created() {
     this.$store.dispatch("setFakeMenu", false);
-    console.log('current product- id', this.product_id)
     this.getCategoriesForProductID(this.product_id);
   },
 
