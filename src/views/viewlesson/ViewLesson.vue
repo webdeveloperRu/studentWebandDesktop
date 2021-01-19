@@ -325,15 +325,15 @@
                     "
                   >
                     <vs-avatar size="40px"></vs-avatar>
-                    <div>{{ comment.author_name }}</div>
+                    <div class="ml-2">{{ comment.author_name }}</div>
                   </div>
                   <div>
                     {{ timeDifference(Date.now(), comment.created_on) }}
                   </div>
                 </div>
                 <p class="ml-4 mt-3">{{ comment.comment }}</p>
-                <vs-button  type="flat">REPLY</vs-button>
-                <vs-button  type="flat">EDIT</vs-button>
+                <vs-button  type="flat" class="ml-3">REPLY</vs-button>
+                <vs-button  type="flat" class="ml-3">EDIT</vs-button>
               </div>
             </vs-card>
           </vs-col>
@@ -551,7 +551,6 @@ export default {
   created() {
     this.getDownloadFileList(this.current_lesson.id);
     this.$store.dispatch("setFakeMenu", false);
-    console.log(this.current_lesson);
     this.getCommentsForLessonID(this.lesson_id);
     if (this.current_category.sort_position == 1) this.prev_button = false;
     if (this.current_category.sort_position == this.category_list.length)
@@ -859,7 +858,6 @@ export default {
       var test = this.comment.replace(/\s/g, "");
       if (test != "") {
         if (this.academy_token !== null) {
-          console.log('posst collaed')
           this.$store.dispatch("commentManage/postCommentPreview", [
             this.current_lesson.id,
             this.comment,
