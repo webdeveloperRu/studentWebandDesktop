@@ -75,11 +75,11 @@
                     controlsList="nodownload"
                   >
                     <source
-                      src="https://assets.mixkit.co/videos/download/mixkit-countryside-meadow-4075.mp4"
+                      :src="current_lesson.video_url"
                       type="video/mp4"
                     />
                     <source
-                      src="https://assets.mixkit.co/videos/download/mixkit-countryside-meadow-4075.mp4"
+                      a:src="current_lesson.video_url"
                       type="video/ogg"
                     />
                     Your browser does not support the video tag.
@@ -353,7 +353,14 @@
             code-toggler
           >
             <vs-card>
-              <h4 class="mb-3">Downloads</h4>
+              <div class="download-header-layout">
+                <h4 class="mb-3">Downloads</h4>
+                <div
+                  class="download-file-progress mb-3 vs-con-loading__container loading"
+                  ref="loading"
+                  id="loading"
+                ></div>
+              </div>
               <div
                 v-for="(filesrc, index) in download_files"
                 :key="index"
@@ -368,7 +375,7 @@
                 <div class="ml-3">
                   <div style="color: dodgerblue">
                     <a
-                      style="cursor: pointer"
+                      class="download-file-link"
                       v-text="filesrc.name"
                       @click="downloadWithAxios(filesrc.url, filesrc.name)"
                     />
@@ -550,6 +557,7 @@ export default {
   created() {
     this.getDownloadFileList(this.current_lesson.id);
     this.$store.dispatch("setFakeMenu", false);
+    console.log(this.current_lesson)
     // this.getCommentsForLessonID(this.lesson_id);
     if (this.current_category.sort_position == 1) this.prev_button = false;
     if (this.current_category.sort_position == this.category_list.length)
@@ -668,7 +676,7 @@ export default {
 
     clickLessonItem(current_lesson) {
       this.$store.dispatch("lessonManage/setCurrentLesson", current_lesson);
-      this.getDownloadFileList(current_lesson.id)
+      this.getDownloadFileList(current_lesson.id);
       // this.getCommentsForLessonID(current_lesson.id);
       if (
         this.current_lesson.sort_position >
@@ -779,7 +787,12 @@ export default {
     },
 
     downloadWithAxios(url, title) {
-      console.log(url);
+      this.$vs.loading({
+        container: '#loading',
+        scale: 0.5,
+        type: "material",
+      });
+
       Axios({
         method: "get",
         url,
@@ -787,8 +800,10 @@ export default {
       })
         .then((response) => {
           this.forceFileDownload(response, title);
+           this.$vs.loading.close(this.$refs.loading)
         })
-        .catch(() => console.log("error occured"));
+        .catch(() => {});
+       this.$vs.loading.close(this.$refs.loading)
     },
 
     markAsComplete(param) {
@@ -847,7 +862,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .lesson-image {
   border-radius: 4px;
   overflow: hidden;
@@ -952,7 +967,21 @@ export default {
   text-align: center;
   cursor: pointer;
 }
-
+.download-file-link {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+.download-header-layout {
+  display: flex;
+  align-items: center;
+}
+.download-file-progress {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+}
 @media only screen and (max-width: 900px) {
   .lesson-overview.con-vs-card .vs-card--content {
     padding: 0;
