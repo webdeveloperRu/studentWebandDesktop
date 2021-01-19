@@ -89,6 +89,7 @@
       Search new dd
       -->
       <!-- <div class="cursor-pointer pr-2 pl-2 ml-1 mr-1">Store</div> -->
+      <div v-if="academy_token !== null"><vs-button size="13" type="border" @click="exitPreview">Exit Preview</vs-button></div>
       <div class="cursor-pointer pr-2 pl-2 ml-1 mr-1" @click="linkToMyproducts">
         My Library
       </div>
@@ -498,6 +499,11 @@ export default {
   },
 
   methods: {
+    exitPreview() {
+      localStorage.removeItem("academy_token");
+      this.$router.push('/login')
+
+    },
     linkToAnnouncementUrl() {
       window.open(
         this.current_product.customize_header.announcement_url,
@@ -632,6 +638,12 @@ export default {
       var id = this.$route.params.lesson_id;
       if (id !== undefined) return id.slice(0, id.length);
       else return "";
+    },
+
+    academy_token: {
+      get() {
+        return JSON.parse(localStorage.getItem("academy_token"));
+      },
     },
     navbar_header_height: {
        get() {

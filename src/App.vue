@@ -53,8 +53,8 @@ export default {
     let token = params.get("academy_token");
     let product_id = params.get("id");
     if (token !== null) {
-      this.getProductList(product_id);
       this.$store.commit("ACADEMY_TOKEN", token);
+      this.getProductList(product_id);
       this.$router.replace("/library").catch(() => {});
     } else {
       if (JSON.parse(localStorage.getItem("academy_token")) !== null) {
