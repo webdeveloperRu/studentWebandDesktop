@@ -22,7 +22,12 @@
       <!---Customizer / Settings-->
       <!-- <Customizer @updateTopbarColor="updateTopbarColor" /> -->
     </div>
-    <Footer></Footer>
+    <div v-if="main_page">
+      <MainFooter></MainFooter>
+    </div>
+    <div v-else>
+      <Footer></Footer>
+    </div>
   </div>
 </template>
 
@@ -34,12 +39,14 @@ import sidebarLinks from "@/layout/full/sidebar/sidebarlinks.js";
 // import Breadcrumb from '@/layout/full/breadcrumb/Breadcrumb.vue';
 import themeConfig from "@/../themeConfig.js";
 import Footer from "@/layout/full/footer/Footer.vue";
+import MainFooter from "@/layout/full/footer/MainFooter.vue";
 
 export default {
   name: "MainContainer",
   components: {
     Navbar,
     Footer,
+    MainFooter,
     // SideBar,
     // Customizer,
     // Breadcrumb
@@ -48,6 +55,8 @@ export default {
     topbarColor: themeConfig.topbarColor,
     logotitle: themeConfig.logotitle,
     sidebarLinks: sidebarLinks,
+    updateFooter: 0,
+    main_page: true,
   }),
 
   methods: {
@@ -57,22 +66,27 @@ export default {
   },
 
   updated() {
-
+    let current_path = String(window.location.pathname);
+    if (current_path == "/library") {
+      this.main_page = true;
+    } else {
+      this.main_page = false;
+    }
     if (this.academy_token !== null) return;
     if (this.logged_user == null) {
       this.$router.replace("/login");
     }
   },
   beforeUpdate() {
-
     if (this.academy_token !== null) return;
     if (this.logged_user == null) {
       this.$router.replace("/login");
     }
   },
 
-  created() {
-  },
+  watch: {},
+
+  created() {},
 
   computed: {
     academy_token: {

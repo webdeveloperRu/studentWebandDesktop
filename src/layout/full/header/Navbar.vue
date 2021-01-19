@@ -89,7 +89,7 @@
       Search new dd
       -->
       <!-- <div class="cursor-pointer pr-2 pl-2 ml-1 mr-1">Store</div> -->
-      <div v-if="academy_token !== null"><vs-button size="13" type="border" @click="exitPreview">Exit Preview</vs-button></div>
+      <div v-if="academy_token !== null"><vs-button size="13" type="border" @click.native="exitPreview">Exit Preview</vs-button></div>
       <div class="cursor-pointer pr-2 pl-2 ml-1 mr-1" @click="linkToMyproducts">
         My Library
       </div>

@@ -169,7 +169,7 @@ export default {
             .then(() => {
               if (this.user_logged) {
                 if (!this.is_disabled) {
-                  this.$router.push("./library");
+                  this.$router.push("/library");
                 } else {
                   this.$vs.notify({
                     color: "#ff3300",

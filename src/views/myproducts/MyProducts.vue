@@ -27,6 +27,7 @@
           <div
             slot="media"
             class="product-image"
+            @click="viewProduct(product.id)"
             v-bind:style="{
               'background-image': 'url(' + product.thumbnail + ')',
             }"
