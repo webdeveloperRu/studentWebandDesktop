@@ -41,7 +41,7 @@ export default new Vuex.Store({
       got: false,
     },
     custom_warning: "#ff3300",
-    is_fake: true,
+    is_fake: false,
     show_fake_menu: true,
     academy_token: "",
   },
