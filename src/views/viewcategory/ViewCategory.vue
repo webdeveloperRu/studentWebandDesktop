@@ -256,20 +256,38 @@ export default {
 
     lesson_list: {
       get() {
-        let list = {};
+       let list = {};
+        let lesson_list = {}
         list = this.$store.getters["lessonManage/lesson_list"];
-        return list;
-        // if (list[this.category_id] == undefined) return [];
-        // else return list[this.category_id];
+        for (let i = 0; i < this.category_list.length; i++) {
+          let lesson_count = 0;
+          lesson_list[this.category_list[i].id] = []
+          for (let j =0; j < list[this.category_list[i].id].length; j++) {
+            if(list[this.category_list[i].id][j].status == "published") {
+              lesson_list[this.category_list[i].id][lesson_count] = list[this.category_list[i].id][j]
+              lesson_count++;
+            }
+          }
+        }
+        return lesson_list;
       },
     },
 
     category_list: {
       get() {
         let list = [];
-        list = this.$store.getters["productManage/category_list"];
-        if (list == undefined) return [];
-        else return list;
+        let category_list = this.$store.getters["productManage/category_list"];
+        if (category_list == undefined) return [];
+        else {
+          let published_count = 0;
+          for (let i = 0; i < category_list.length; i++) {
+            if (category_list[i].status == 'published') {
+              list[published_count] = category_list[i]
+              published_count++;
+            }
+          }
+          return list;
+        }
       },
     },
 
