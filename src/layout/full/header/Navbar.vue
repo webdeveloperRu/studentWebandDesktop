@@ -1,6 +1,7 @@
 <template>
   <header class="gridx">
    <vs-navbar
+      v-if="current_product.customize_header!==undefined"
       class="product-announcement topnavbar"
       style="min-height:50px"
       v-bind:style="{
