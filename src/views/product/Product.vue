@@ -413,7 +413,7 @@ export default {
     },
   },
   watch: {
-    is_fake: function (newValue, oldValue) {
+    is_fake: function () {
       this.getCategoriesForProductID(this.product_id);
     },
   },
