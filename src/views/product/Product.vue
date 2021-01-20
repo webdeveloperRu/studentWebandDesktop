@@ -90,7 +90,7 @@
             </vs-card>
             <vs-card
               v-for="(category, index_card) in category_list"
-              v-bind:key="index_card"             
+              v-bind:key="index_card"
             >
               <h3
                 class="mb-3"
@@ -299,8 +299,8 @@ export default {
         else {
           let published_count = 0;
           for (let i = 0; i < category_list.length; i++) {
-            if (category_list[i].status == 'published') {
-              list[published_count] = category_list[i]
+            if (category_list[i].status == "published") {
+              list[published_count] = category_list[i];
               published_count++;
             }
           }
@@ -311,15 +311,18 @@ export default {
     lesson_list_store: {
       get() {
         let list = {};
-        let lesson_list = {}
+        let lesson_list = {};
         list = this.$store.getters["lessonManage/lesson_list"];
         for (let i = 0; i < this.category_list.length; i++) {
           let lesson_count = 0;
-          lesson_list[this.category_list[i].id] = []
-          for (let j =0; j < list[this.category_list[i].id].length; j++) {
-            if(list[this.category_list[i].id][j].status == "published") {
-              lesson_list[this.category_list[i].id][lesson_count] = list[this.category_list[i].id][j]
-              lesson_count++;
+          lesson_list[this.category_list[i].id] = [];
+          if (list[this.category_list[i].id] !== undefined) {
+            for (let j = 0; j < list[this.category_list[i].id].length; j++) {
+              if (list[this.category_list[i].id][j].status == "published") {
+                lesson_list[this.category_list[i].id][lesson_count] =
+                  list[this.category_list[i].id][j];
+                lesson_count++;
+              }
             }
           }
         }
@@ -423,7 +426,7 @@ export default {
   },
 
   methods: {
-      /**
+    /**
      * --------------get ProductList-------------
      */
     async getProductList() {
@@ -557,11 +560,11 @@ export default {
         await this.$store
           .dispatch("lessonManage/getLessonList", category_id)
           .then(() => {
-            // this.$vs.notify({
-            //   color: this.notification_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
+            this.$vs.notify({
+              color: this.notification_color,
+              text: this.notification_text,
+              icon: this.notification_icon,
+            });
           });
       }
     },
@@ -608,7 +611,6 @@ export default {
       this.$router.push(
         "/view-lesson/" + this.lesson_list[this.category_list[0].id][0].id
       );
-
     },
   },
 };

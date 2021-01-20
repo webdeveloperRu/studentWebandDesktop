@@ -1,5 +1,5 @@
 <template>
- <div
+  <div
     v-bind:style="{
       'margin-top': product_margin_top,
     }"
@@ -121,7 +121,7 @@
                     code-toggler
                   >
                     <h4 class="mb-2">{{ lesson.title }}</h4>
-                    <div class="category-description" >
+                    <div class="category-description">
                       <span v-html="lesson.body"></span>
                     </div>
                   </vs-col>
@@ -182,9 +182,7 @@
                   size="70px"
                   :src="current_product.instructor.headshot"
                 ></vs-avatar> -->
-                 <vs-avatar
-                  size="70px"
-                ></vs-avatar>
+                <vs-avatar size="70px"></vs-avatar>
                 <div class="ml-3">
                   <div class="mb-1">
                     John Doe
@@ -214,7 +212,7 @@ export default {
   }),
 
   computed: {
-    category_id: function() {
+    category_id: function () {
       var id = this.$route.params.category_id;
       return id.slice(0, id.length);
     },
@@ -256,16 +254,19 @@ export default {
 
     lesson_list: {
       get() {
-       let list = {};
-        let lesson_list = {}
+        let list = {};
+        let lesson_list = {};
         list = this.$store.getters["lessonManage/lesson_list"];
         for (let i = 0; i < this.category_list.length; i++) {
           let lesson_count = 0;
-          lesson_list[this.category_list[i].id] = []
-          for (let j =0; j < list[this.category_list[i].id].length; j++) {
-            if(list[this.category_list[i].id][j].status == "published") {
-              lesson_list[this.category_list[i].id][lesson_count] = list[this.category_list[i].id][j]
-              lesson_count++;
+          lesson_list[this.category_list[i].id] = [];
+          if (list[this.category_list[i].id] !== undefined) {
+            for (let j = 0; j < list[this.category_list[i].id].length; j++) {
+              if (list[this.category_list[i].id][j].status == "published") {
+                lesson_list[this.category_list[i].id][lesson_count] =
+                  list[this.category_list[i].id][j];
+                lesson_count++;
+              }
             }
           }
         }
@@ -281,8 +282,8 @@ export default {
         else {
           let published_count = 0;
           for (let i = 0; i < category_list.length; i++) {
-            if (category_list[i].status == 'published') {
-              list[published_count] = category_list[i]
+            if (category_list[i].status == "published") {
+              list[published_count] = category_list[i];
               published_count++;
             }
           }
@@ -376,10 +377,9 @@ export default {
         return value;
       },
     },
-
   },
   watch: {
-    is_fake: function() {
+    is_fake: function () {
       this.getLessonsForCategoryID(this.category_id);
     },
   },
@@ -388,13 +388,12 @@ export default {
     this.$store.dispatch("setFakeMenu", false);
 
     this.getLessonsForCategoryID(this.category_id);
-   
   },
 
   methods: {
     async getLessonsForCategoryID(category_id) {
       this.$vs.loading({ type: "material" });
-     if (this.academy_token !== null) {
+      if (this.academy_token !== null) {
         await this.$store
           .dispatch("lessonManage/getLessonListPreview", category_id)
           .then(() => {
@@ -408,39 +407,43 @@ export default {
         await this.$store
           .dispatch("lessonManage/getLessonListDemo", category_id)
           .then(() => {
-            var count = 0;
-            var total_lesson = this.lesson_list[category_id].length;
-            for (let i = 0; i < total_lesson; i++) {
-              if (this.lesson_list[category_id][i].lessons_completed)
-                count = count + 1;
-            }
-            this.completed_lesson = count;
-            this.completed_lesson_percent = (count * 100) / total_lesson;
+            if (this.lesson_list[category_id] !== undefined) {
+              var count = 0;
+              var total_lesson = this.lesson_list[category_id].length;
+              for (let i = 0; i < total_lesson; i++) {
+                if (this.lesson_list[category_id][i].lessons_completed)
+                  count = count + 1;
+              }
+              this.completed_lesson = count;
+              this.completed_lesson_percent = (count * 100) / total_lesson;
 
-            // this.$vs.notify({
-            //   color: this.notification_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
+              this.$vs.notify({
+                color: this.notification_color,
+                text: this.notification_text,
+                icon: this.notification_icon,
+              });
+            }
           });
       } else {
         await this.$store
           .dispatch("lessonManage/getLessonList", category_id)
           .then(() => {
-            var count = 0;
-            var total_lesson = this.lesson_list[category_id].length;
-            for (let i = 0; i < total_lesson; i++) {
-              if (this.lesson_list[category_id][i].lessons_completed)
-                count = count + 1;
-            }
-            this.completed_lesson = count;
-            this.completed_lesson_percent = (count * 100) / total_lesson;
+            if (this.lesson_list[category_id] !== undefined) {
+              var count = 0;
+              var total_lesson = this.lesson_list[category_id].length;
+              for (let i = 0; i < total_lesson; i++) {
+                if (this.lesson_list[category_id][i].lessons_completed)
+                  count = count + 1;
+              }
+              this.completed_lesson = count;
+              this.completed_lesson_percent = (count * 100) / total_lesson;
 
-            // this.$vs.notify({
-            //   color: this.notification_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
+              this.$vs.notify({
+                color: this.notification_color,
+                text: this.notification_text,
+                icon: this.notification_icon,
+              });
+            }
           });
       }
       this.$vs.loading.close(this.$refs.loading);
@@ -461,7 +464,7 @@ export default {
     backToCurrentProduct() {
       this.$router.push("/product/" + this.current_product.id);
     },
-     startCourse(current_product) {
+    startCourse(current_product) {
       this.$store.dispatch("productManage/setCurrentProduct", current_product);
 
       this.$store.dispatch(
@@ -476,7 +479,6 @@ export default {
       this.$router.push(
         "/view-lesson/" + this.lesson_list[this.category_list[0].id][0].id
       );
-
     },
   },
 };
