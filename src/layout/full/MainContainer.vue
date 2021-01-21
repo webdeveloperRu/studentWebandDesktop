@@ -72,8 +72,13 @@ export default {
     } else {
       this.main_page = false;
     }
-    if(this.academy_token == null && this.logged_user !== null)
+    if(this.academy_token !== null ) {
+      console.log('called academy token')
+    return;
+    }
+    if( this.logged_user === null){
       this.$router.push('/login')
+    }
   },
   beforeUpdate() {
     if (this.academy_token !== null) return;
