@@ -88,96 +88,148 @@
                 </p>
               </div>
             </vs-card>
-            <vs-card
-              v-for="(category, index_card) in category_list"
-              v-bind:key="index_card"
+            <div
+              v-if="current_product.customize_syllabus.syllabus_type == 'Posts'"
             >
-              <h3
-                class="mb-3"
-                style="cursor: pointer"
-                @click="viewCategory(category.id)"
+              <vs-card
+                v-for="(category, index_card) in category_list"
+                v-bind:key="index_card"
               >
-                {{ category.name }}
-              </h3>
-              <div
-                v-for="(lesson, index) in lesson_list[category.id]"
-                v-bind:key="index"
-                style="cursor: pointer"
-                @click="viewLesson(lesson, category)"
-              >
-                <vs-row
-                  vs-justify="center"
-                  vs-align="center"
-                  class="category-item mb-4 p-2"
-                  v-if="index < 10 || view_more[index_card] === true"
-                  v-bind="view_more"
+                <h3
+                  class="mb-3"
+                  style="cursor: pointer"
+                  @click="viewCategory(category.id)"
                 >
-                  <vs-col
-                    type="flex"
-                    vs-justify="center"
-                    vs-align="center"
-                    vs-lg="3"
-                    vs-sm="12"
-                    vs-xs="12"
-                    code-toggler
-                  >
-                    <div
-                      class="category-image"
-                      style="cursor: pointer"
-                      v-bind:style="{
-                        'background-image': 'url(' + lesson.thumbnail + ')',
-                      }"
-                    ></div>
-                  </vs-col>
-                  <vs-col
-                    type="flex"
-                    vs-justify="center"
-                    vs-align="center"
-                    vs-lg="8"
-                    vs-sm="12"
-                    vs-xs="12"
-                    code-toggler
-                  >
-                    <div style="cursor: pointer">
-                      <h4 class="mb-2">{{ lesson.title }}</h4>
-                      <div class="category-description">
-                        <span v-html="lesson.body"></span>
-                      </div>
-                    </div>
-                  </vs-col>
-                  <vs-col
-                    type="flex"
-                    vs-justify="center"
-                    vs-align="center"
-                    vs-lg="1"
-                    vs-sm="12"
-                    vs-xs="12"
-                    code-toggler
-                    :title="'This lesson is completed'"
-                  >
-                    <vs-icon
-                      icon="check"
-                      color="danger"
-                      style="font-size: 20px"
-                      v-if="lesson.lessons_completed"
-                    ></vs-icon>
-                  </vs-col>
-                </vs-row>
-              </div>
-              <div v-if="lesson_list[category.id] != undefined">
+                  {{ category.name }}
+                </h3>
                 <div
-                  v-if="
-                    lesson_list[category.id].length > 10 &&
-                    view_more[index_card] != true
-                  "
-                  color="danger"
-                  @click="viewMore(index_card)"
-                  style="cursor: pointer; color: dodgerblue"
+                  v-for="(lesson, index) in lesson_list[category.id]"
+                  v-bind:key="index"
+                  style="cursor: pointer"
+                  @click="viewLesson(lesson, category)"
                 >
-                  View More
+                  <vs-row
+                    vs-justify="center"
+                    vs-align="center"
+                    class="category-item mb-4 p-2"
+                    v-if="index < 10 || view_more[index_card] === true"
+                    v-bind="view_more"
+                  >
+                    <vs-col
+                      type="flex"
+                      vs-justify="center"
+                      vs-align="center"
+                      vs-lg="3"
+                      vs-sm="12"
+                      vs-xs="12"
+                      code-toggler
+                    >
+                      <div
+                        class="category-image"
+                        style="cursor: pointer"
+                        v-bind:style="{
+                          'background-image': 'url(' + lesson.thumbnail + ')',
+                        }"
+                      ></div>
+                    </vs-col>
+                    <vs-col
+                      type="flex"
+                      vs-justify="center"
+                      vs-align="center"
+                      vs-lg="8"
+                      vs-sm="12"
+                      vs-xs="12"
+                      code-toggler
+                    >
+                      <div style="cursor: pointer">
+                        <h4 class="mb-2">{{ lesson.title }}</h4>
+                        <div class="category-description">
+                          <span v-html="lesson.body"></span>
+                        </div>
+                      </div>
+                    </vs-col>
+                    <vs-col
+                      type="flex"
+                      vs-justify="center"
+                      vs-align="center"
+                      vs-lg="1"
+                      vs-sm="12"
+                      vs-xs="12"
+                      code-toggler
+                      :title="'This lesson is completed'"
+                    >
+                      <vs-icon
+                        icon="check"
+                        color="danger"
+                        style="font-size: 20px"
+                        v-if="lesson.lessons_completed"
+                      ></vs-icon>
+                    </vs-col>
+                  </vs-row>
                 </div>
-              </div>
-            </vs-card>
+                <div v-if="lesson_list[category.id] != undefined">
+                  <div
+                    v-if="
+                      lesson_list[category.id].length > 10 &&
+                      view_more[index_card] != true
+                    "
+                    color="danger"
+                    @click="viewMore(index_card)"
+                    style="cursor: pointer; color: dodgerblue"
+                  >
+                    {{current_product.customize_syllabus.show_more_text}}
+                  </div>
+                </div>
+              </vs-card>
+            </div>
+            <div v-else>
+              <vs-card>
+                <h3 class="mb-3">{{current_product.customize_syllabus.categories_text}}</h3>
+                <div
+                  v-for="(category, index) in category_list"
+                  v-bind:key="index"
+                  @click="viewCategory(category.id)"
+                  style="cursor: pointer"
+                >
+                  <vs-row
+                    vs-justify="center"
+                    vs-align="center"
+                    class="category-item mb-4 p-2"
+                  >
+                    <vs-col
+                      type="flex"
+                      vs-justify="center"
+                      vs-align="center"
+                      vs-lg="3"
+                      vs-sm="12"
+                      vs-xs="12"
+                      code-toggler
+                    >
+                      <div
+                        class="category-image"
+                        v-bind:style="{
+                          'background-image': 'url(' + category.thumbnail + ')',
+                        }"
+                      ></div>
+                    </vs-col>
+                    <vs-col
+                      type="flex"
+                      vs-justify="center"
+                      vs-align="center"
+                      vs-lg="8"
+                      vs-sm="12"
+                      vs-xs="12"
+                      code-toggler
+                    >
+                      <h4 class="mb-2">{{ category.name }}</h4>
+                      <div class="category-description">
+                        <span v-html="category.description"></span>
+                      </div>
+                    </vs-col>
+                  </vs-row>
+                </div>
+              </vs-card>
+            </div>
           </vs-col>
           <vs-col
             type="flex"
