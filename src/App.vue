@@ -30,43 +30,21 @@ export default {
           this.$router.replace("/login");
         });
     },
-
-    async getProductList(product_id) {
-      this.$vs.loading({ type: "material" });
-      if (this.academy_token !== null) {
-        await this.$store
-          .dispatch("productManage/getProductListPreview")
-          .then(() => {
-            for (let i = 0; i < this.product_list.length; i++) {
-              if (this.product_list[i].id == product_id) {
-                this.$store.dispatch("productManage/setCurrentProduct", this.product_list[i])
-              }
-            }
-          });
-      }
-      this.$vs.loading.close(this.$refs.loading);
-    },
   },
 
   created() {
     const params = new URLSearchParams(window.location.search);
     let token = params.get("academy_token");
-    let product_id = params.get("id");
+    // let product_id = params.get("id");
     if (token !== null) {
-      this.$store.commit("ACADEMY_TOKEN", token);
-      this.getProductList(product_id);
       this.$router.replace("/library").catch(() => {});
-    } else {
-      if (JSON.parse(localStorage.getItem("academy_token")) !== null) {
-        this.getProductList(product_id);
-        this.$router.replace("/library").catch(() => {});
-      }
+    } else if (JSON.parse(localStorage.getItem("academy_token")) == null) {
       if (this.logged_user != null) this.checkToken();
       else this.$router.replace("/login");
     }
   },
   computed: {
-     product_list: {
+    product_list: {
       get() {
         return this.$store.getters["productManage/product_list"];
       },
@@ -84,11 +62,6 @@ export default {
     status_got: {
       get() {
         return this.$store.getters["status_got"];
-      },
-    },
-    product_list: {
-      get() {
-        return this.$store.getters["productManage/product_list"];
       },
     },
   },

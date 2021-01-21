@@ -72,10 +72,8 @@ export default {
     } else {
       this.main_page = false;
     }
-    if (this.academy_token !== null) return;
-    if (this.logged_user == null) {
-      this.$router.replace("/login");
-    }
+    if(this.academy_token == null && this.logged_user !== null)
+      this.$router.push('/login')
   },
   beforeUpdate() {
     if (this.academy_token !== null) return;
@@ -84,9 +82,15 @@ export default {
     }
   },
 
+   
+
   watch: {},
 
-  created() {},
+  created() {
+    // const params = new URLSearchParams(window.location.search);
+    // let token = params.get("academy_token");
+    // let product_id = params.get("id");
+  },
 
   computed: {
     academy_token: {
@@ -125,6 +129,18 @@ export default {
         return this.$store.getters["status_got"];
       },
     },
+
+    current_product: {
+      get() {
+        return this.$store.getters["productManage/current_product"];
+      }
+    },
+
+    product_list: {
+      get() {
+        return this.$store.getters["productManage/product_list"];
+      }
+    }
   },
 };
 </script>

@@ -146,8 +146,8 @@ export default {
 
   },
   created() {
-    if (this.logged_user) this.$router.push("/library");
-    if (this.academy_token != null)   this.$router.push('/library').catch(() => {});
+    if (this.logged_user) this.$router.push(window.location.pathname).catch(() => {});
+    if (this.academy_token != null)  this.$router.push(window.location.pathname).catch(() => {});
 
   },
 
