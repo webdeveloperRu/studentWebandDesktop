@@ -49,7 +49,6 @@ export default {
   },
 
   created() {
-    console.log("called app")
     const params = new URLSearchParams(window.location.search);
     let token = params.get("academy_token");
     let product_id = params.get("id");
@@ -59,7 +58,7 @@ export default {
       this.$router.replace('/library').catch(() => {});
     } else {
       if (JSON.parse(localStorage.getItem("academy_token")) !== null) {
-        console.log('called academy token')
+        this.$router.replace('/library').catch(() => {});
       }
       else{
         if (this.logged_user != null) this.checkToken();

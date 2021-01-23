@@ -1,9 +1,9 @@
 <template>
   <header class="gridx">
-   <vs-navbar
-      v-if="current_product.customize_header!==undefined"
+    <vs-navbar
+      v-if="current_product.customize_header !== undefined"
       class="product-announcement topnavbar"
-      style="min-height:50px"
+      style="min-height: 50px"
       v-bind:style="{
         background: current_product.customize_header.announcement_color,
         color: current_product.customize_header.announcement_text_color,
@@ -40,17 +40,22 @@
       <!---
       Template logo
       -->
-      <div slot="title" class="themelogo">
+      <div slot="title">
         <a href="/">
-          <img :src="logo" v-if="logo" alt="Dashboard" width="50"
+          <img
+            :src="logo"
+            v-if="logo"
+            alt="Dashboard"
+            :height="header_logo_height"
+            class="header-logo ml-3"
         /></a>
         <!-- <a href="/"> <img src="@/assets/images/logo.s" v-if="logo" alt="Dashboard" width="50" /></a> -->
-        <span
+        <!-- <span
           class="logo-text"
           v-if="title"
           style="display: block; width: 300px"
           >{{ title }}</span
-        >
+        > -->
       </div>
       <!---
       Mobile toggle
@@ -90,7 +95,11 @@
       Search new dd
       -->
       <!-- <div class="cursor-pointer pr-2 pl-2 ml-1 mr-1">Store</div> -->
-      <div v-if="academy_token !== null"><vs-button size="13" type="border" @click.native="exitPreview">Exit Preview</vs-button></div>
+      <div v-if="academy_token !== null">
+        <vs-button size="13" type="border" @click.native="exitPreview"
+          >Exit Preview</vs-button
+        >
+      </div>
       <div class="cursor-pointer pr-2 pl-2 ml-1 mr-1" @click="linkToMyproducts">
         My Library
       </div>
@@ -502,8 +511,7 @@ export default {
   methods: {
     exitPreview() {
       localStorage.removeItem("academy_token");
-      this.$router.push('/login')
-
+      this.$router.push("/login");
     },
     linkToAnnouncementUrl() {
       window.open(
@@ -583,11 +591,10 @@ export default {
     },
   },
   computed: {
-
-    current_product:{
+    current_product: {
       get() {
         return this.$store.getters["productManage/current_product"];
-      }
+      },
     },
     getCurrentLanguage() {
       const locale = this.$i18n.locale;
@@ -647,14 +654,34 @@ export default {
       },
     },
     navbar_header_height: {
-       get() {
-        if (this.product_id !== "" || this.category_id !=="" || this.lesson_id !== "") {
-          if (this.current_product.customize_header.show_announcement && this.current_product.customize_header.show_header) {
+      get() {
+        if (
+          this.product_id !== "" ||
+          this.category_id !== "" ||
+          this.lesson_id !== ""
+        ) {
+          if (
+            this.current_product.customize_header.show_announcement &&
+            this.current_product.customize_header.show_header
+          ) {
             return "50px";
           } else return "0px";
-        }else return "0px"
+        } else return "0px";
       },
-    }
+    },
+
+    header_logo_height: {
+      get() {
+        let height = parseInt(
+          this.current_product.customize_header.custom_logo_height
+        );
+        if (isNaN(height) || height == 0) {
+          return "50";
+        } else {
+          return height;
+        }
+      },
+    },
   },
 };
 </script>
@@ -673,5 +700,9 @@ export default {
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
+}
+.header-logo {
+  margin: 2px 0px;
+  object-fit: scale-down;
 }
 </style>

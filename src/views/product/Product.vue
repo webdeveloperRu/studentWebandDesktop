@@ -7,7 +7,7 @@
     <div
       class="category-banner"
       v-bind:style="{
-        'background-image': current_product.customize_hero.background_image,
+        'background-image': convertBackgroundCssImageUrl(current_product.hero_background_image),
         'text-align': hero_alignment,
       }"
     >
@@ -15,7 +15,7 @@
         v-bind:style="{
           'padding-top': hero_spacing,
           'padding-bottom': hero_spacing,
-          background: current_product.customize_hero.overlay_color,
+          'background-color': current_product.customize_hero.overlay_color,
         }"
       >
         <p
@@ -30,7 +30,7 @@
         >
           {{ current_product.description }}
         </p>
-        <vs-button @click.native="startCourse(current_product)"
+        <vs-button class="mt-2" @click.native="startCourse(current_product)"
           >Start Course</vs-button
         >
       </div>
@@ -400,14 +400,19 @@ export default {
 
     product_margin_top: {
       get() {
+        let logo_height_diff = 0;
+        if (this.current_product.customize_header.custom_logo_height > 56) {
+          logo_height_diff = this.current_product.customize_header.custom_logo_height -56;
+        }
         if (this.product_id !== "") {
           if (
             this.current_product.customize_header.show_announcement &&
             this.current_product.customize_header.show_header
           ) {
-            return "50px";
-          } else return "0px";
-        } else return "0px";
+            logo_height_diff = logo_height_diff + 50
+          } else logo_height_diff = 0;
+        } else logo_height_diff = 0
+        return logo_height_diff.toString() +"px"
       },
     },
 
@@ -478,6 +483,10 @@ export default {
   },
 
   methods: {
+
+     convertBackgroundCssImageUrl(url) {
+      return "url(" + url + ")";
+    },
     /**
      * --------------get ProductList-------------
      */
@@ -685,6 +694,7 @@ export default {
 .product-description-category {
   font-size: 16px;
   font-weight: 500;
+  margin: 0 100px;
 }
 
 .product-image {

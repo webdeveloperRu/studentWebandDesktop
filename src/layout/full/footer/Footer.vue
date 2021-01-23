@@ -230,6 +230,11 @@
 <script>
 export default {
   name: "Footer",
+  props: {
+    footer_logo: {
+      type: String,
+    },
+  },
 
   data: () => ({}),
 
