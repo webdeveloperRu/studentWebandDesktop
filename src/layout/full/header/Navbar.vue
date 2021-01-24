@@ -13,6 +13,9 @@
         class="product-announcement-text"
         @click="linkToAnnouncementUrl"
         v-if="current_product.customize_header.announcement_new_window"
+        v-bind:style="{
+          'font-family': current_product.customize_settings.base_font_family,
+        }"
       >
         {{ current_product.customize_header.announcement_text }}
       </div>
@@ -100,7 +103,13 @@
           >Exit Preview</vs-button
         >
       </div>
-      <div class="cursor-pointer pr-2 pl-2 ml-1 mr-1" @click="linkToMyproducts">
+      <div
+        class="cursor-pointer pr-2 pl-2 ml-1 mr-1"
+        @click="linkToMyproducts"
+        v-bind:style="{
+          'font-family': current_product.customize_settings.heading_font_family,
+        }"
+      >
         My Library
       </div>
       <vs-dropdown
@@ -108,7 +117,15 @@
         left
         class="cursor-pointer pr-2 pl-2 ml-1 mr-1"
       >
-        <a class="text-white-dark" href="#" href.prevent>
+        <a
+          class="text-white-dark"
+          href="#"
+          href.prevent
+          v-bind:style="{
+            'font-family':
+              current_product.customize_settings.heading_font_family,
+          }"
+        >
           Search
           <!-- <vs-icon icon="search"></vs-icon> -->
         </a>

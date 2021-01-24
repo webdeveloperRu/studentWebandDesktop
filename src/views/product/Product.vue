@@ -7,7 +7,9 @@
     <div
       class="category-banner"
       v-bind:style="{
-        'background-image': convertBackgroundCssImageUrl(current_product.hero_background_image),
+        'background-image': convertBackgroundCssImageUrl(
+          current_product.hero_background_image
+        ),
         'text-align': hero_alignment,
       }"
     >
@@ -20,17 +22,30 @@
       >
         <p
           class="producttitle-category"
-          v-bind:style="{ color: current_product.customize_hero.text_color }"
+          v-bind:style="{
+            color: current_product.customize_hero.text_color,
+            'font-family':
+              current_product.customize_settings.heading_font_family,
+          }"
         >
           {{ current_product.title }}
         </p>
         <p
           class="product-description-category"
-          v-bind:style="{ color: current_product.customize_hero.text_color }"
+          v-bind:style="{
+            color: current_product.customize_hero.text_color,
+            'font-family': current_product.customize_settings.base_font_family,
+          }"
         >
           {{ current_product.description }}
         </p>
-        <vs-button class="mt-2" @click.native="startCourse(current_product)"
+        <vs-button
+          class="mt-2"
+          @click.native="startCourse(current_product)"
+          v-bind:style="{
+            'font-family':
+              current_product.customize_settings.heading_font_family,
+          }"
           >Start Course</vs-button
         >
       </div>
@@ -47,6 +62,9 @@
         vs-xs="12"
         class="mb-3"
         code-toggler
+        v-bind:style="{
+          'font-family': current_product.customize_settings.base_font_family,
+        }"
       >
         <span
           @click="backToMyproducts"
@@ -80,10 +98,24 @@
                   'text-align': welcome_text_aligment,
                 }"
               >
-                <p class="product-welcome-title">
+                <p
+                  class="product-welcome-title"
+                  v-bind:style="{
+                    color: current_product.customize_settings.dark_font_color,
+                    'font-family':
+                      current_product.customize_settings.heading_font_family,
+                  }"
+                >
                   {{ current_product.title }}
                 </p>
-                <p class="product-welcome-description">
+                <p
+                  class="product-welcome-description"
+                  v-bind:style="{
+                    color: current_product.customize_settings.dark_font_color,
+                    'font-family':
+                      current_product.customize_settings.base_font_family,
+                  }"
+                >
                   {{ current_product.description }}
                 </p>
               </div>
@@ -99,6 +131,11 @@
                   class="mb-3"
                   style="cursor: pointer"
                   @click="viewCategory(category.id)"
+                  v-bind:style="{
+                    'font-family':
+                      current_product.customize_settings.heading_font_family,
+                    color: current_product.customize_settings.dark_font_color,
+                  }"
                 >
                   {{ category.name }}
                 </h3>
@@ -142,8 +179,30 @@
                       code-toggler
                     >
                       <div style="cursor: pointer">
-                        <h4 class="mb-2">{{ lesson.title }}</h4>
-                        <div class="category-description">
+                        <h4
+                          class="mb-2"
+                          v-bind:style="{
+                            'font-family':
+                              current_product.customize_settings
+                                .base_font_family,
+                            color:
+                              current_product.customize_settings
+                                .dark_font_color,
+                          }"
+                        >
+                          {{ lesson.title }}
+                        </h4>
+                        <div
+                          class="category-description"
+                          v-bind:style="{
+                            'font-family':
+                              current_product.customize_settings
+                                .base_font_family,
+                            color:
+                              current_product.customize_settings
+                                .dark_font_color,
+                          }"
+                        >
                           <span v-html="lesson.body"></span>
                         </div>
                       </div>
@@ -176,15 +235,28 @@
                     color="danger"
                     @click="viewMore(index_card)"
                     style="cursor: pointer; color: dodgerblue"
+                    v-bind:style="{
+                      'font-family':
+                        current_product.customize_settings.base_font_family,
+                    }"
                   >
-                    {{current_product.customize_syllabus.show_more_text}}
+                    {{ current_product.customize_syllabus.show_more_text }}
                   </div>
                 </div>
               </vs-card>
             </div>
             <div v-else>
               <vs-card>
-                <h3 class="mb-3">{{current_product.customize_syllabus.categories_text}}</h3>
+                <h3
+                  class="mb-3"
+                  v-bind:style="{
+                    'font-family':
+                      current_product.customize_settings.heading_font_family,
+                    color: current_product.customize_settings.dark_font_color,
+                  }"
+                >
+                  {{ current_product.customize_syllabus.categories_text }}
+                </h3>
                 <div
                   v-for="(category, index) in category_list"
                   v-bind:key="index"
@@ -223,7 +295,17 @@
                     >
                       <h4 class="mb-2">{{ category.name }}</h4>
                       <div class="category-description">
-                        <span v-html="category.description"></span>
+                        <span
+                          v-html="category.description"
+                          v-bind:style="{
+                            'font-family':
+                              current_product.customize_settings
+                                .base_font_family,
+                            color:
+                              current_product.customize_settings
+                                .dark_font_color,
+                          }"
+                        ></span>
                       </div>
                     </vs-col>
                   </vs-row>
@@ -248,7 +330,14 @@
                 }"
               ></div>
               <div class="mx-4 mt-3">
-                <h4 class="mt-3">
+                <h4
+                  class="mt-3"
+                  v-bind:style="{
+                    'font-family':
+                      current_product.customize_settings.heading_font_family,
+                    color: current_product.customize_settings.dark_font_color,
+                  }"
+                >
                   {{ completed_lesson }} of {{ total_lesson }} Lessons Completed
                 </h4>
                 <vs-progress
@@ -261,12 +350,28 @@
             <vs-card>
               <h4 class="mb-3">Product Description</h4>
 
-              <div class="mt-3">
+              <div
+                class="mt-3"
+                v-bind:style="{
+                  'font-family':
+                    current_product.customize_settings.base_font_family,
+                  color: current_product.customize_settings.dark_font_color,
+                }"
+              >
                 {{ current_product.description }}
               </div>
             </vs-card>
             <vs-card>
-              <h4 class="mb-3">Instructor</h4>
+              <h4
+                class="mb-3"
+                v-bind:style="{
+                  'font-family':
+                    current_product.customize_settings.heading_font_family,
+                  color: current_product.customize_settings.dark_font_color,
+                }"
+              >
+                Instructor
+              </h4>
               <div
                 class="d-flex"
                 style="align-items: center; justify-content: flex-start"
@@ -277,11 +382,26 @@
                 ></vs-avatar> -->
                 <vs-avatar size="70px"></vs-avatar>
                 <div class="ml-3">
-                  <div class="mb-1">
+                  <div
+                    class="mb-1"
+                    v-bind:style="{
+                      'font-family':
+                        current_product.customize_settings.base_font_family,
+                      color: current_product.customize_settings.dark_font_color,
+                    }"
+                  >
                     <!-- <strong>{{ current_product.instructor.name }}</strong> -->
                     <strong>John Doe</strong>
                   </div>
-                  <div style="color: dodgerblue">Instructor</div>
+                  <div
+                    style="color: dodgerblue"
+                    v-bind:style="{
+                      'font-family':
+                        current_product.customize_settings.base_font_family,
+                    }"
+                  >
+                    Instructor
+                  </div>
                 </div>
               </div>
               <div class="mt-3">
@@ -402,17 +522,18 @@ export default {
       get() {
         let logo_height_diff = 0;
         if (this.current_product.customize_header.custom_logo_height > 56) {
-          logo_height_diff = this.current_product.customize_header.custom_logo_height -56;
+          logo_height_diff =
+            this.current_product.customize_header.custom_logo_height - 56;
         }
         if (this.product_id !== "") {
           if (
             this.current_product.customize_header.show_announcement &&
             this.current_product.customize_header.show_header
           ) {
-            logo_height_diff = logo_height_diff + 50
+            logo_height_diff = logo_height_diff + 50;
           } else logo_height_diff = 0;
-        } else logo_height_diff = 0
-        return logo_height_diff.toString() +"px"
+        } else logo_height_diff = 0;
+        return logo_height_diff.toString() + "px";
       },
     },
 
@@ -483,8 +604,7 @@ export default {
   },
 
   methods: {
-
-     convertBackgroundCssImageUrl(url) {
+    convertBackgroundCssImageUrl(url) {
       return "url(" + url + ")";
     },
     /**
@@ -757,6 +877,10 @@ export default {
 .progress-product_thumbnail .vs-card--content .category-image {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+.product-welcome-title {
+  font-size: 40px;
+  font-weight: 600;
 }
 
 /* @media only screen and (min-width: 400px) {

@@ -10,6 +10,9 @@
         vs-xs="12"
         class="mb-3"
         code-toggler
+        v-bind:style="{
+          'font-family': current_product.customize_settings.base_font_family,
+        }"
       >
         <span
           @click="backToMyproducts"
@@ -91,12 +94,26 @@
                   style="color: white"
                 >
                   <div class="lesson-list my-2">
-                    <h4 class="mb-1">{{ current_category.name }}</h4>
+                    <h4
+                      class="mb-1"
+                      v-bind:style="{
+                        'font-family':
+                          current_product.customize_settings
+                            .heading_font_family,
+                      }"
+                    >
+                      {{ current_category.name }}
+                    </h4>
                     <div
                       v-if="
                         lesson_list[current_category.id].length != undefined
                       "
                       class="mb-1"
+                      v-bind:style="{
+                        'font-family':
+                          current_product.customize_settings
+                            .heading_font_family,
+                      }"
                     >
                       {{ lesson_list[current_category.id].length }} Lessons
                     </div>
@@ -122,6 +139,10 @@
                         style="cursor: pointer"
                         v-bind:class="{
                           lessonitemactive: lesson.id == current_lesson.id,
+                        }"
+                        v-bind:style="{
+                          'font-family':
+                            current_product.customize_settings.base_font_family,
                         }"
                       >
                         <vs-col
@@ -180,7 +201,13 @@
                       </vs-row>
                     </div>
                   </div>
-                  <div class="text-center">
+                  <div
+                    class="text-center"
+                    v-bind:style="{
+                      'font-family':
+                        current_product.customize_settings.base_font_family,
+                    }"
+                  >
                     <vs-button
                       v-if="prev_button"
                       color="dark"
@@ -278,7 +305,16 @@
                 </vs-col>
               </vs-row>
 
-              <h2 class="mb-3">{{ current_lesson.title }}</h2>
+              <h3
+                class="mb-3"
+                v-bind:style="{
+                  'font-family':
+                    current_product.customize_settings.heading_font_family,
+                  color: current_product.customize_settings.dark_font_color,
+                }"
+              >
+                {{ current_lesson.title }}
+              </h3>
               <h4
                 class="mb-3"
                 style="color: dodgerblue; cursor: pointer"
@@ -292,8 +328,27 @@
             </vs-card>
             <vs-card>
               <div style="display: flex">
-                <h3 class="mb-3">Comments</h3>
-                <h3 class="ml-3 mb-3 text-muted">{{ comment_list.length }}</h3>
+                <h3
+                  class="mb-3"
+                  v-bind:style="{
+                    'font-family':
+                      current_product.customize_settings.heading_font_family,
+                    color: current_product.customize_settings.dark_font_color,
+                  }"
+                >
+                  Comments
+                </h3>
+                <h3
+                  class="ml-3 mb-3 "
+                  v-bind:style="{
+                    'font-family':
+                      current_product.customize_settings.heading_font_family,
+                      color: current_product.customize_settings.dark_font_color,
+                      opacity: 0.5
+                  }"
+                >
+                  {{ comment_list.length }}
+                </h3>
               </div>
               <vs-textarea
                 placeholder="Say Something here..."
@@ -325,15 +380,41 @@
                     "
                   >
                     <vs-avatar size="40px"></vs-avatar>
-                    <div class="ml-2">{{ comment.author_name }}</div>
+                    <div
+                      class="ml-2"
+                      v-bind:style="{
+                        'font-family':
+                          current_product.customize_settings.base_font_family,
+                        color:
+                          current_product.customize_settings.dark_font_color,
+                      }"
+                    >
+                      {{ comment.author_name }}
+                    </div>
                   </div>
-                  <div>
+                  <div
+                    v-bind:style="{
+                      'font-family':
+                        current_product.customize_settings.base_font_family,
+                      color: current_product.customize_settings.dark_font_color,
+                      opacity: 0.5
+                    }"
+                  >
                     {{ timeDifference(Date.now(), comment.created_on) }}
                   </div>
                 </div>
-                <p class="ml-4 mt-3">{{ comment.comment }}</p>
-                <vs-button  type="flat" class="ml-3">REPLY</vs-button>
-                <vs-button  type="flat" class="ml-3">EDIT</vs-button>
+                <p
+                  class="ml-4 mt-3"
+                  v-bind:style="{
+                    'font-family':
+                      current_product.customize_settings.base_font_family,
+                    color: current_product.customize_settings.dark_font_color,
+                  }"
+                >
+                  {{ comment.comment }}
+                </p>
+                <vs-button type="flat" class="ml-3">REPLY</vs-button>
+                <vs-button type="flat" class="ml-3">EDIT</vs-button>
               </div>
             </vs-card>
           </vs-col>
@@ -348,7 +429,16 @@
           >
             <vs-card>
               <div class="download-header-layout">
-                <h4 class="mb-3">Downloads</h4>
+                <h4
+                  class="mb-3"
+                  v-bind:style="{
+                    'font-family':
+                      current_product.customize_settings.heading_font_family,
+                    color: current_product.customize_settings.dark_font_color,
+                  }"
+                >
+                  Downloads
+                </h4>
                 <div
                   class="download-file-progress mb-3 vs-con-loading__container loading"
                   ref="loading"
@@ -360,6 +450,11 @@
                 :key="index"
                 class="d-flex mt-2"
                 style="align-items: center; justify-content: flex-start"
+                v-bind:style="{
+                  'font-family':
+                    current_product.customize_settings.base_font_family,
+                  color: current_product.customize_settings.dark_font_color,
+                }"
               >
                 <vs-icon
                   icon="insert_drive_file"
@@ -378,7 +473,16 @@
               </div>
             </vs-card>
             <vs-card>
-              <h4 class="mb-3">Instructor</h4>
+              <h4
+                class="mb-3"
+                v-bind:style="{
+                  'font-family':
+                    current_product.customize_settings.heading_font_family,
+                  color: current_product.customize_settings.dark_font_color,
+                }"
+              >
+                Instructor
+              </h4>
               <div
                 class="d-flex"
                 style="align-items: center; justify-content: flex-start"
@@ -389,11 +493,26 @@
                 ></vs-avatar> -->
                 <vs-avatar size="70px"></vs-avatar>
                 <div class="ml-3">
-                  <div class="mb-1">
+                  <div
+                    class="mb-1"
+                    v-bind:style="{
+                      'font-family':
+                        current_product.customize_settings.base_font_family,
+                      color: current_product.customize_settings.dark_font_color,
+                    }"
+                  >
                     John Doe
                     <!-- <strong>{{ current_product.instructor.name }}</strong> -->
                   </div>
-                  <div style="color: dodgerblue">Instructor</div>
+                  <div
+                    style="color: dodgerblue"
+                    v-bind:style="{
+                      'font-family':
+                        current_product.customize_settings.base_font_family,
+                    }"
+                  >
+                    Instructor
+                  </div>
                 </div>
               </div>
               <div class="mt-3">
@@ -491,8 +610,8 @@ export default {
         else {
           let published_count = 0;
           for (let i = 0; i < category_list.length; i++) {
-            if (category_list[i].status == 'published') {
-              list[published_count] = category_list[i]
+            if (category_list[i].status == "published") {
+              list[published_count] = category_list[i];
               published_count++;
             }
           }
@@ -503,15 +622,16 @@ export default {
 
     lesson_list: {
       get() {
-       let list = {};
-        let lesson_list = {}
+        let list = {};
+        let lesson_list = {};
         list = this.$store.getters["lessonManage/lesson_list"];
         for (let i = 0; i < this.category_list.length; i++) {
           let lesson_count = 0;
-          lesson_list[this.category_list[i].id] = []
-          for (let j =0; j < list[this.category_list[i].id].length; j++) {
-            if(list[this.category_list[i].id][j].status == "published") {
-              lesson_list[this.category_list[i].id][lesson_count] = list[this.category_list[i].id][j]
+          lesson_list[this.category_list[i].id] = [];
+          for (let j = 0; j < list[this.category_list[i].id].length; j++) {
+            if (list[this.category_list[i].id][j].status == "published") {
+              lesson_list[this.category_list[i].id][lesson_count] =
+                list[this.category_list[i].id][j];
               lesson_count++;
             }
           }
@@ -881,26 +1001,32 @@ export default {
       var test = this.comment.replace(/\s/g, "");
       if (test != "") {
         if (this.academy_token !== null) {
-          this.$store.dispatch("commentManage/postCommentPreview", [
-            this.current_lesson.id,
-            this.comment,
-          ]).then(()=> {
-             this.getCommentsForLessonID(this.current_lesson.id);
-          })
+          this.$store
+            .dispatch("commentManage/postCommentPreview", [
+              this.current_lesson.id,
+              this.comment,
+            ])
+            .then(() => {
+              this.getCommentsForLessonID(this.current_lesson.id);
+            });
         } else if (this.is_fake) {
-          this.$store.dispatch("commentManage/postCommentDemo", [
-            this.current_lesson.id,
-            this.comment,
-          ]).then(()=> {
-             this.getCommentsForLessonID(this.current_lesson.id);
-          })
+          this.$store
+            .dispatch("commentManage/postCommentDemo", [
+              this.current_lesson.id,
+              this.comment,
+            ])
+            .then(() => {
+              this.getCommentsForLessonID(this.current_lesson.id);
+            });
         } else {
-          this.$store.dispatch("commentManage/postComment", [
-            this.current_lesson.id,
-            this.comment,
-          ]).then(()=> {
-             this.getCommentsForLessonID(this.current_lesson.id);
-          })
+          this.$store
+            .dispatch("commentManage/postComment", [
+              this.current_lesson.id,
+              this.comment,
+            ])
+            .then(() => {
+              this.getCommentsForLessonID(this.current_lesson.id);
+            });
         }
       }
       this.comment = "";

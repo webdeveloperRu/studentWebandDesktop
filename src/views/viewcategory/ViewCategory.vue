@@ -20,17 +20,29 @@
       >
         <p
           class="producttitle-category"
-          v-bind:style="{ color: current_product.customize_hero.text_color }"
+          v-bind:style="{
+            color: current_product.customize_hero.text_color,
+            'font-family':
+              current_product.customize_settings.heading_font_family,
+          }"
         >
           {{ current_product.title }}
         </p>
         <p
           class="product-description-category"
-          v-bind:style="{ color: current_product.customize_hero.text_color }"
+          v-bind:style="{
+            color: current_product.customize_hero.text_color,
+            'font-family': current_product.customize_settings.base_font_family,
+          }"
         >
           {{ current_product.description }}
         </p>
-        <vs-button @click.native="startCourse(current_product)"
+        <vs-button
+          @click.native="startCourse(current_product)"
+          v-bind:style="{
+            'font-family':
+              current_product.customize_settings.heading_font_family,
+          }"
           >Start Course</vs-button
         >
       </div>
@@ -47,6 +59,9 @@
         vs-xs="12"
         class="mb-3"
         code-toggler
+        v-bind:style="{
+          'font-family': current_product.customize_settings.base_font_family,
+        }"
       >
         <span
           @click="backToMyproducts"
@@ -83,7 +98,16 @@
             code-toggler
           >
             <vs-card>
-              <h3 class="mb-3">{{ current_category.name }}</h3>
+              <h3
+                class="mb-3"
+                v-bind:style="{
+                  'font-family':
+                    current_product.customize_settings.heading_font_family,
+                  color: current_product.customize_settings.dark_font_color,
+                }"
+              >
+                {{ current_category.name }}
+              </h3>
               <div
                 v-for="(lesson, index) in lesson_list[category_id]"
                 v-bind:key="index"
@@ -120,8 +144,26 @@
                     vs-xs="12"
                     code-toggler
                   >
-                    <h4 class="mb-2">{{ lesson.title }}</h4>
-                    <div class="category-description">
+                    <h4
+                      class="mb-2"
+                      v-bind:style="{
+                        'font-family':
+                          current_product.customize_settings.base_font_family,
+                        color:
+                          current_product.customize_settings.dark_font_color,
+                      }"
+                    >
+                      {{ lesson.title }}
+                    </h4>
+                    <div
+                      class="category-description"
+                      v-bind:style="{
+                        'font-family':
+                          current_product.customize_settings.base_font_family,
+                        color:
+                          current_product.customize_settings.dark_font_color,
+                      }"
+                    >
                       <span v-html="lesson.body"></span>
                     </div>
                   </vs-col>
@@ -162,7 +204,14 @@
                   'background-image': 'url(' + current_category.thumbnail + ')',
                 }"
               ></div>
-              <div class="mx-4 mt-3">
+              <div
+                class="mx-4 mt-3"
+                v-bind:style="{
+                  'font-family':
+                    current_product.customize_settings.heading_font_family,
+                  color: current_product.customize_settings.dark_font_color,
+                }"
+              >
                 <h4 class="mt-3" v-if="lesson_list[category_id] != undefined">
                   {{ completed_lesson }} of
                   {{ lesson_list[category_id].length }} Lessons Completed
@@ -173,7 +222,16 @@
               </div>
             </vs-card>
             <vs-card>
-              <h4 class="mb-3">Instructor</h4>
+              <h4
+                class="mb-3"
+                v-bind:style="{
+                  'font-family':
+                    current_product.customize_settings.heading_font_family,
+                  color: current_product.customize_settings.dark_font_color,
+                }"
+              >
+                Instructor
+              </h4>
               <div
                 class="d-flex"
                 style="align-items: center; justify-content: flex-start"
@@ -184,11 +242,26 @@
                 ></vs-avatar> -->
                 <vs-avatar size="70px"></vs-avatar>
                 <div class="ml-3">
-                  <div class="mb-1">
+                  <div
+                    class="mb-1"
+                    v-bind:style="{
+                      'font-family':
+                        current_product.customize_settings.base_font_family,
+                      color: current_product.customize_settings.dark_font_color,
+                    }"
+                  >
                     John Doe
                     <!-- <strong>{{ current_product.instructor.name }}</strong> -->
                   </div>
-                  <div style="color: dodgerblue">Instructor</div>
+                  <div
+                    style="color: dodgerblue"
+                    v-bind:style="{
+                      'font-family':
+                        current_product.customize_settings.base_font_family,
+                    }"
+                  >
+                    Instructor
+                  </div>
                 </div>
               </div>
               <div class="mt-3">

@@ -39,7 +39,10 @@ export default {
           .then(() => {
             for (let i = 0; i < this.product_list.length; i++) {
               if (this.product_list[i].id == product_id) {
-                this.$store.dispatch("productManage/setCurrentProduct", this.product_list[i])
+                this.$store.dispatch(
+                  "productManage/setCurrentProduct",
+                  this.product_list[i]
+                );
               }
             }
           });
@@ -55,19 +58,18 @@ export default {
     if (token !== null) {
       this.$store.commit("ACADEMY_TOKEN", token);
       this.getProductList(product_id);
-      this.$router.replace('/library').catch(() => {});
+      this.$router.replace("/library").catch(() => {});
     } else {
       if (JSON.parse(localStorage.getItem("academy_token")) !== null) {
-        this.$router.replace('/library').catch(() => {});
-      }
-      else{
+        this.$router.replace("/library").catch(() => {});
+      } else {
         if (this.logged_user != null) this.checkToken();
         else this.$router.replace("/login");
       }
     }
   },
   computed: {
-     product_list: {
+    product_list: {
       get() {
         return this.$store.getters["productManage/product_list"];
       },
@@ -87,16 +89,12 @@ export default {
         return this.$store.getters["status_got"];
       },
     },
-    product_list: {
-      get() {
-        return this.$store.getters["productManage/product_list"];
-      },
-    },
   },
 };
 </script>
 
-<style>
+<style lang ="scss">
+@import "./assets/scss/_font.scss";
 #app * {
   -moz-user-select: none !important;
   -webkit-user-select: none !important;
