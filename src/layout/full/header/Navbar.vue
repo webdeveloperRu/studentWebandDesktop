@@ -107,7 +107,7 @@
         class="cursor-pointer pr-2 pl-2 ml-1 mr-1"
         @click="linkToMyproducts"
         v-bind:style="{
-          'font-family': current_product.customize_settings.heading_font_family,
+          'font-family': heading_font_family,
         }"
       >
         My Library
@@ -123,7 +123,7 @@
           href.prevent
           v-bind:style="{
             'font-family':
-              current_product.customize_settings.heading_font_family,
+              heading_font_family,
           }"
         >
           Search
@@ -672,6 +672,8 @@ export default {
     },
     navbar_header_height: {
       get() {
+        if(this.current_product.customize_header==undefined )
+          return '0px'
         if (
           this.product_id !== "" ||
           this.category_id !== "" ||
@@ -689,6 +691,9 @@ export default {
 
     header_logo_height: {
       get() {
+        if(this.current_product.customize_header == undefined) {
+          return '50'
+        }
         let height = parseInt(
           this.current_product.customize_header.custom_logo_height
         );
@@ -699,7 +704,17 @@ export default {
         }
       },
     },
+
+    heading_font_family: {
+      get() {
+        if (this.current_product.customize_settings !== undefined)
+          return this.current_product.customize_settings.heading_font_family
+        else
+          return ""
+      }
+    }
   },
+
 };
 </script>
 

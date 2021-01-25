@@ -600,6 +600,7 @@ export default {
   },
   created() {
     this.$store.dispatch("setFakeMenu", false);
+    console.log(this.current_product)
     this.getCategoriesForProductID(this.product_id);
   },
 
@@ -611,7 +612,6 @@ export default {
      * --------------get ProductList-------------
      */
     async getProductList() {
-      this.$vs.loading({ type: "material" });
       if (this.academy_token !== null) {
         await this.$store
           .dispatch("productManage/getProductListPreview")
@@ -635,7 +635,6 @@ export default {
           // });
         });
       }
-      this.$vs.loading.close(this.$refs.loading);
     },
     async loadingLessons() {
       if (this.category_list != undefined && this.category_list.length !== 0) {

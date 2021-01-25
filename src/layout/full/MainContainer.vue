@@ -63,7 +63,7 @@ export default {
     updateFooter: 0,
     main_page: true,
     page_background_image: "",
-    header_logo_image : "",
+    header_logo_image : require("@/assets/images/logo/logo.png"),
     footer_logo: ""
   }),
 
@@ -89,7 +89,7 @@ export default {
 
     setPageBackgroundImage() {
         let current_path = String(window.location.pathname);
-        if (current_path == "/library")  
+        if (current_path == "/library" || current_path == "/settings")  
           this.page_background_image = ""
         else
           this.page_background_image = this.current_product.page_background_image
@@ -133,6 +133,8 @@ export default {
   watch: {},
 
   created() {
+    console.log(this.logged_user)
+    console.log(this.header_logo_image)
     // const params = new URLSearchParams(window.location.search);
     // let token = params.get("academy_token");
     // let product_id = params.get("id");
