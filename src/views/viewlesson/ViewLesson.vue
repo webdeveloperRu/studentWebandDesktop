@@ -764,22 +764,12 @@ export default {
           .dispatch("commentManage/getCommentListPreview", lesson_id)
           .then(() => {
             this.$vs.loading.close();
-            // this.$vs.notify({
-            //   color: this.notification_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
           });
       } else if (this.is_fake) {
         await this.$store
           .dispatch("commentManage/getCommentList", lesson_id)
           .then(() => {
             if (!this.status_got) {
-              // this.$vs.notify({
-              //   color: this.notification_color,
-              //   text: this.notification_text,
-              //   icon: this.notification_icon,
-              // });
             }
             this.$vs.loading.close();
           });
@@ -788,11 +778,6 @@ export default {
           .dispatch("commentManage/getCommentListDemo", lesson_id)
           .then(() => {
             if (!this.status_got) {
-              // this.$vs.notify({
-              //   color: this.notification_color,
-              //   text: this.notification_text,
-              //   icon: this.notification_icon,
-              // });
             }
             this.$vs.loading.close();
           });
@@ -810,21 +795,18 @@ export default {
         await this.$store
           .dispatch("lessonManage/getLessonListPreview", category_id)
           .then(() => {
-            // this.$vs.notify({
-            //   color: this.notification_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
           });
       } else if (this.is_fake) {
         await this.$store
           .dispatch("lessonManage/getLessonListDemo", category_id)
           .then(() => {
-            this.$vs.notify({
-              color: this.notification_color,
-              text: this.notification_text,
-              icon: this.notification_icon,
-            });
+            if (!this.status_got) {
+              this.$vs.notify({
+                color: this.message_danger_color,
+                text: this.notification_text,
+                icon: this.notification_icon,
+              });
+            }
           });
       } else {
         await this.$store
@@ -832,7 +814,7 @@ export default {
           .then(() => {
             if (!this.status_got) {
               this.$vs.notify({
-                color: this.notification_color,
+                color: this.message_danger_color,
                 text: this.notification_text,
                 icon: this.notification_icon,
               });
@@ -995,11 +977,6 @@ export default {
         ])
         .then(() => {
           if (param == true) this.show_congratulation = true;
-          // this.$vs.notify({
-          //   color: this.notification_color,
-          //   text: this.notification_text,
-          //   icon: this.notification_icon,
-          // });
         });
     },
 

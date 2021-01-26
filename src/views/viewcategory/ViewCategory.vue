@@ -548,11 +548,6 @@ export default {
         await this.$store
           .dispatch("lessonManage/getLessonListPreview", category_id)
           .then(() => {
-            // this.$vs.notify({
-            //   color: this.notification_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
           });
       } else if (this.is_fake) {
         await this.$store

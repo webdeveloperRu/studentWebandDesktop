@@ -692,19 +692,9 @@ export default {
         await this.$store
           .dispatch("productManage/getProductListDemo")
           .then(() => {
-            // this.$vs.notify({
-            //   color: this.notification_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
           });
       } else {
         await this.$store.dispatch("productManage/getProductList").then(() => {
-          // this.$vs.notify({
-          //   color: this.notification_color,
-          //   text: this.notification_text,
-          //   icon: this.notification_icon,
-          // });
         });
       }
     },
@@ -752,7 +742,7 @@ export default {
             if (this.status_got) this.loadingLessons();
             else {
               this.$vs.notify({
-                color: this.notification_color,
+                color: this.message_danger_color,
                 text: this.notification_text,
                 icon: this.notification_icon,
               });
@@ -792,31 +782,25 @@ export default {
         await this.$store
           .dispatch("lessonManage/getLessonListPreview", category_id)
           .then(() => {
-            // this.$vs.notify({
-            //   color: this.message_success_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
+           
           });
       } else if (this.is_fake) {
         await this.$store
           .dispatch("lessonManage/getLessonListDemo", category_id)
           .then(() => {
-            // this.$vs.notify({
-            //   color: this.notification_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
+           
           });
       } else {
         await this.$store
           .dispatch("lessonManage/getLessonList", category_id)
           .then(() => {
-            // this.$vs.notify({
-            //   color: this.notification_color,
-            //   text: this.notification_text,
-            //   icon: this.notification_icon,
-            // });
+            if(!this.status_got) {
+              this.$vs.notify({
+                color: this.message_danger_color,
+                text: this.notification_text,
+                icon: this.notification_icon,
+              });
+            }
           });
       }
     },
