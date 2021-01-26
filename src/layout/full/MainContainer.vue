@@ -133,8 +133,6 @@ export default {
   watch: {},
 
   created() {
-    console.log(this.logged_user)
-    console.log(this.header_logo_image)
     // const params = new URLSearchParams(window.location.search);
     // let token = params.get("academy_token");
     // let product_id = params.get("id");

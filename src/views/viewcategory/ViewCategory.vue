@@ -7,7 +7,7 @@
     <div
       class="category-banner"
       v-bind:style="{
-        'background-image': current_product.customize_hero.background_image,
+        'background-image': convertBackgroundCssImageUrl(hero_background_image),
         'text-align': hero_alignment,
       }"
     >
@@ -15,13 +15,13 @@
         v-bind:style="{
           'padding-top': hero_spacing,
           'padding-bottom': hero_spacing,
-          background: current_product.customize_hero.overlay_color,
+          background: hero_overlay_color,
         }"
       >
         <p
           class="producttitle-category"
           v-bind:style="{
-            color: current_product.customize_hero.text_color,
+            color: hero_text_color,
             'font-family':
               current_product.customize_settings.heading_font_family,
           }"
@@ -31,7 +31,7 @@
         <p
           class="product-description-category"
           v-bind:style="{
-            color: current_product.customize_hero.text_color,
+            color: hero_text_color,
             'font-family': current_product.customize_settings.base_font_family,
           }"
         >
@@ -97,13 +97,13 @@
             vs-xs="12"
             code-toggler
           >
-            <vs-card>
+            <vs-card v-if="lesson_list[category_id] != 0">
               <h3
                 class="mb-3"
                 v-bind:style="{
                   'font-family':
                     current_product.customize_settings.heading_font_family,
-                  color: current_product.customize_settings.dark_font_color,
+                  color: dark_font_color,
                 }"
               >
                 {{ current_category.name }}
@@ -131,7 +131,8 @@
                     <div
                       class="category-image"
                       v-bind:style="{
-                        'background-image': 'url(' + lesson.thumbnail + ')',
+                        'background-image':
+                          'url(' + getLessonThumbnail(lesson.thumbnail) + ')',
                       }"
                     ></div>
                   </vs-col>
@@ -149,8 +150,7 @@
                       v-bind:style="{
                         'font-family':
                           current_product.customize_settings.base_font_family,
-                        color:
-                          current_product.customize_settings.dark_font_color,
+                        color: dark_font_color,
                       }"
                     >
                       {{ lesson.title }}
@@ -160,8 +160,7 @@
                       v-bind:style="{
                         'font-family':
                           current_product.customize_settings.base_font_family,
-                        color:
-                          current_product.customize_settings.dark_font_color,
+                        color: dark_font_color,
                       }"
                     >
                       <span v-html="lesson.body"></span>
@@ -187,6 +186,11 @@
                 </vs-row>
               </div>
             </vs-card>
+            <vs-card v-else>
+              <div class="mt-5 mb-5">
+                <h3>There is no course data in this product...</h3>
+              </div>
+            </vs-card>
           </vs-col>
           <vs-col
             type="flex"
@@ -201,7 +205,10 @@
               <div
                 class="category-image"
                 v-bind:style="{
-                  'background-image': 'url(' + current_category.thumbnail + ')',
+                  'background-image':
+                    'url(' +
+                    getCategoryThumbnail(current_category.thumbnail) +
+                    ')',
                 }"
               ></div>
               <div
@@ -209,7 +216,7 @@
                 v-bind:style="{
                   'font-family':
                     current_product.customize_settings.heading_font_family,
-                  color: current_product.customize_settings.dark_font_color,
+                  color: dark_font_color,
                 }"
               >
                 <h4 class="mt-3" v-if="lesson_list[category_id] != undefined">
@@ -227,7 +234,7 @@
                 v-bind:style="{
                   'font-family':
                     current_product.customize_settings.heading_font_family,
-                  color: current_product.customize_settings.dark_font_color,
+                  color: dark_font_color,
                 }"
               >
                 Instructor
@@ -247,7 +254,7 @@
                     v-bind:style="{
                       'font-family':
                         current_product.customize_settings.base_font_family,
-                      color: current_product.customize_settings.dark_font_color,
+                      color: dark_font_color,
                     }"
                   >
                     John Doe
@@ -450,6 +457,39 @@ export default {
         return value;
       },
     },
+
+    hero_overlay_color: {
+      get() {
+        if (this.current_product.customize_hero.overlay_color == null) {
+          return "#ffffff1f";
+        } else return this.current_product.customize_hero.overlay_color;
+      },
+    },
+
+    hero_text_color: {
+      get() {
+        if (this.current_product.customize_hero.text_color == null) {
+          return "#ffffff";
+        } else return this.current_product.customize_hero.text_color;
+      },
+    },
+
+    hero_background_image: {
+      get() {
+        if (this.current_product.hero_background_image == "") {
+          return require("@/assets/images/hero-default-banner.png");
+        } else {
+          return this.current_product.hero_background_image;
+        }
+      },
+    },
+    dark_font_color: {
+      get() {
+        if (this.current_product.customize_settings.dark_font_color == null)
+          return "#000000";
+        else return this.current_product.customize_settings.dark_font_color;
+      },
+    },
   },
   watch: {
     is_fake: function () {
@@ -552,6 +592,26 @@ export default {
       this.$router.push(
         "/view-lesson/" + this.lesson_list[this.category_list[0].id][0].id
       );
+    },
+
+    convertBackgroundCssImageUrl(url) {
+      return "url(" + url + ")";
+    },
+
+    getCategoryThumbnail(url) {
+      if (url == "" || url == null) {
+        return require("@/assets/images/default-product.png");
+      } else {
+        return url;
+      }
+    },
+
+    getLessonThumbnail(url) {
+      if (url == "" || url == null) {
+        return require("@/assets/images/default-product.png");
+      } else {
+        return url;
+      }
     },
   },
 };

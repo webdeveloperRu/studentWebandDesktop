@@ -7,9 +7,7 @@
     <div
       class="category-banner"
       v-bind:style="{
-        'background-image': convertBackgroundCssImageUrl(
-          current_product.hero_background_image
-        ),
+        'background-image': convertBackgroundCssImageUrl(hero_background_image),
         'text-align': hero_alignment,
       }"
     >
@@ -17,13 +15,13 @@
         v-bind:style="{
           'padding-top': hero_spacing,
           'padding-bottom': hero_spacing,
-          'background-color': current_product.customize_hero.overlay_color,
+          'background-color': hero_overlay_color,
         }"
       >
         <p
           class="producttitle-category"
           v-bind:style="{
-            color: current_product.customize_hero.text_color,
+            color: hero_text_color,
             'font-family':
               current_product.customize_settings.heading_font_family,
           }"
@@ -101,7 +99,7 @@
                 <p
                   class="product-welcome-title"
                   v-bind:style="{
-                    color: current_product.customize_settings.dark_font_color,
+                    color: dark_font_color,
                     'font-family':
                       current_product.customize_settings.heading_font_family,
                   }"
@@ -111,7 +109,7 @@
                 <p
                   class="product-welcome-description"
                   v-bind:style="{
-                    color: current_product.customize_settings.dark_font_color,
+                    color: dark_font_color,
                     'font-family':
                       current_product.customize_settings.base_font_family,
                   }"
@@ -134,7 +132,7 @@
                   v-bind:style="{
                     'font-family':
                       current_product.customize_settings.heading_font_family,
-                    color: current_product.customize_settings.dark_font_color,
+                    color: dark_font_color,
                   }"
                 >
                   {{ category.name }}
@@ -165,7 +163,7 @@
                         class="category-image"
                         style="cursor: pointer"
                         v-bind:style="{
-                          'background-image': 'url(' + lesson.thumbnail + ')',
+                          'background-image': 'url(' + getLessonThumbnail(lesson.thumbnail) + ')',
                         }"
                       ></div>
                     </vs-col>
@@ -185,9 +183,7 @@
                             'font-family':
                               current_product.customize_settings
                                 .base_font_family,
-                            color:
-                              current_product.customize_settings
-                                .dark_font_color,
+                            color: dark_font_color,
                           }"
                         >
                           {{ lesson.title }}
@@ -198,9 +194,7 @@
                             'font-family':
                               current_product.customize_settings
                                 .base_font_family,
-                            color:
-                              current_product.customize_settings
-                                .dark_font_color,
+                            color: dark_font_color,
                           }"
                         >
                           <span v-html="lesson.body"></span>
@@ -252,7 +246,7 @@
                   v-bind:style="{
                     'font-family':
                       current_product.customize_settings.heading_font_family,
-                    color: current_product.customize_settings.dark_font_color,
+                    color: dark_font_color,
                   }"
                 >
                   {{ current_product.customize_syllabus.categories_text }}
@@ -280,7 +274,7 @@
                       <div
                         class="category-image"
                         v-bind:style="{
-                          'background-image': 'url(' + category.thumbnail + ')',
+                          'background-image': 'url(' + getCategoryThumbnail(category.thumbnail) + ')',
                         }"
                       ></div>
                     </vs-col>
@@ -301,9 +295,7 @@
                             'font-family':
                               current_product.customize_settings
                                 .base_font_family,
-                            color:
-                              current_product.customize_settings
-                                .dark_font_color,
+                            color: dark_font_color,
                           }"
                         ></span>
                       </div>
@@ -312,6 +304,15 @@
                 </div>
               </vs-card>
             </div>
+            <div v-if="category_list.length == 0">
+                <vs-card>
+                  <div class="mt-5 mb-5">
+                    <h3>
+                      There is no course data in this product...
+                    </h3>
+                  </div>
+                </vs-card>
+              </div>
           </vs-col>
           <vs-col
             type="flex"
@@ -335,7 +336,7 @@
                   v-bind:style="{
                     'font-family':
                       current_product.customize_settings.heading_font_family,
-                    color: current_product.customize_settings.dark_font_color,
+                    color: dark_font_color,
                   }"
                 >
                   {{ completed_lesson }} of {{ total_lesson }} Lessons Completed
@@ -355,7 +356,7 @@
                 v-bind:style="{
                   'font-family':
                     current_product.customize_settings.base_font_family,
-                  color: current_product.customize_settings.dark_font_color,
+                  color: dark_font_color,
                 }"
               >
                 {{ current_product.description }}
@@ -367,7 +368,7 @@
                 v-bind:style="{
                   'font-family':
                     current_product.customize_settings.heading_font_family,
-                  color: current_product.customize_settings.dark_font_color,
+                  color: dark_font_color,
                 }"
               >
                 Instructor
@@ -387,7 +388,7 @@
                     v-bind:style="{
                       'font-family':
                         current_product.customize_settings.base_font_family,
-                      color: current_product.customize_settings.dark_font_color,
+                      color: dark_font_color,
                     }"
                   >
                     <!-- <strong>{{ current_product.instructor.name }}</strong> -->
@@ -592,6 +593,41 @@ export default {
         return value;
       },
     },
+
+    hero_overlay_color: {
+      get() {
+        if (this.current_product.customize_hero.overlay_color == null) {
+          return "#ffffff1f";
+        } else return this.current_product.customize_hero.overlay_color;
+      },
+    },
+
+    hero_text_color: {
+      get() {
+        if (this.current_product.customize_hero.text_color == null) {
+          return "#ffffff";
+        } else return this.current_product.customize_hero.text_color;
+      },
+    },
+
+    hero_background_image: {
+      get() {
+        if (this.current_product.hero_background_image == "") {
+          return require("@/assets/images/hero-default-banner.png");
+        } else {
+          return this.current_product.hero_background_image;
+        }
+      },
+    },
+
+    dark_font_color: {
+      get() {
+        if ( this.current_product.customize_settings.dark_font_color == null)
+          return "#000000"
+        else
+          return this.current_product.customize_settings.dark_font_color
+      }
+    }
   },
   watch: {
     is_fake: function () {
@@ -600,7 +636,6 @@ export default {
   },
   created() {
     this.$store.dispatch("setFakeMenu", false);
-    console.log(this.current_product)
     this.getCategoriesForProductID(this.product_id);
   },
 
@@ -792,6 +827,22 @@ export default {
         "/view-lesson/" + this.lesson_list[this.category_list[0].id][0].id
       );
     },
+
+    getCategoryThumbnail(url) {
+      if (url == "" || url == null) {
+        return require("@/assets/images/default-product.png")
+      } else {
+        return url
+      }
+    },
+
+    getLessonThumbnail(url) {
+      if (url == "" || url == null) {
+        return require("@/assets/images/default-product.png")
+      } else {
+        return url
+      }
+    }
   },
 };
 </script>
@@ -819,7 +870,6 @@ export default {
 .product-image {
   width: 30%;
   background-position: center;
-  background-image: url("../../assets/images/big/img3.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   height: 170px;
@@ -915,7 +965,6 @@ export default {
   .product-image {
     width: 100%;
     background-position: center;
-    background-image: url("../../assets/images/big/img3.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     height: 200px;

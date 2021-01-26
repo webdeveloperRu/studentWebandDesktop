@@ -5,8 +5,8 @@
       class="product-announcement topnavbar"
       style="min-height: 50px"
       v-bind:style="{
-        background: current_product.customize_header.announcement_color,
-        color: current_product.customize_header.announcement_text_color,
+        background: announcement_color,
+        color: announcement_text_color,
       }"
     >
       <div
@@ -712,7 +712,26 @@ export default {
         else
           return ""
       }
+    },
+
+    announcement_color: {
+      get() {
+        if (this.current_product.customize_header.announcement_color == null)        
+          return '#1ABC9C';
+        else
+          return this.current_product.customize_header.announcement_color;
+      }
+    },
+
+    announcement_text_color: {
+      get() {
+        if (this.current_product.customize_header.announcement_text_color == null)        
+          return '#ffffff';
+        else
+          return this.current_product.customize_header.announcement_text_color;
+      }
     }
+
   },
 
 };
