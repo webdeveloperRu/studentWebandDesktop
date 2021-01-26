@@ -484,6 +484,7 @@ export default {
         }
       },
     },
+
     dark_font_color: {
       get() {
         if (this.current_product.customize_settings.dark_font_color == null)
@@ -491,6 +492,42 @@ export default {
         else return this.current_product.customize_settings.dark_font_color;
       },
     },
+
+    message_success_color: {
+      get() {
+        if ( this.current_product.customize_settings.mc_success == null)
+          return "#1abc9c"
+        else
+          return this.current_product.customize_settings.mc_success
+      }
+    },
+
+    message_info_color: {
+      get() {
+        if ( this.current_product.customize_settings.mc_info == null)
+          return "#34495e"
+        else
+          return this.current_product.customize_settings.mc_info
+      }
+    },
+
+    message_danger_color: {
+      get() {
+        if ( this.current_product.customize_settings.mc_danger == null)
+          return "#e74c3c"
+        else
+          return this.current_product.customize_settings.mc_danger
+      }
+    },
+
+    message_warning_color: {
+      get() {
+        if ( this.current_product.customize_settings.mc_warning == null)
+          return "#f39c12"
+        else
+          return this.current_product.customize_settings.mc_warning
+      }
+    }
   },
   watch: {
     is_fake: function () {
@@ -531,11 +568,6 @@ export default {
               this.completed_lesson = count;
               this.completed_lesson_percent = (count * 100) / total_lesson;
 
-              this.$vs.notify({
-                color: this.notification_color,
-                text: this.notification_text,
-                icon: this.notification_icon,
-              });
             }
           });
       } else {
@@ -552,11 +584,6 @@ export default {
               this.completed_lesson = count;
               this.completed_lesson_percent = (count * 100) / total_lesson;
 
-              this.$vs.notify({
-                color: this.notification_color,
-                text: this.notification_text,
-                icon: this.notification_icon,
-              });
             }
           });
       }

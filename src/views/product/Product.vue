@@ -628,6 +628,42 @@ export default {
         else
           return this.current_product.customize_settings.dark_font_color
       }
+    },
+
+    message_success_color: {
+      get() {
+        if ( this.current_product.customize_settings.mc_success == null)
+          return "#1abc9c"
+        else
+          return this.current_product.customize_settings.mc_success
+      }
+    },
+
+    message_info_color: {
+      get() {
+        if ( this.current_product.customize_settings.mc_info == null)
+          return "#34495e"
+        else
+          return this.current_product.customize_settings.mc_info
+      }
+    },
+
+    message_danger_color: {
+      get() {
+        if ( this.current_product.customize_settings.mc_danger == null)
+          return "#e74c3c"
+        else
+          return this.current_product.customize_settings.mc_danger
+      }
+    },
+
+    message_warning_color: {
+      get() {
+        if ( this.current_product.customize_settings.mc_warning == null)
+          return "#f39c12"
+        else
+          return this.current_product.customize_settings.mc_warning
+      }
     }
   },
   watch: {
@@ -729,7 +765,7 @@ export default {
             if (this.status_got) this.loadingLessons();
             else {
               this.$vs.notify({
-                color: this.notification_color,
+                color: this.message_danger_color,
                 text: this.notification_text,
                 icon: this.notification_icon,
               });
@@ -742,7 +778,7 @@ export default {
             if (this.status_got) this.loadingLessons();
             else {
               this.$vs.notify({
-                color: this.notification_color,
+                color: this.message_danger_color,
                 text: this.notification_text,
                 icon: this.notification_icon,
               });
@@ -757,7 +793,7 @@ export default {
           .dispatch("lessonManage/getLessonListPreview", category_id)
           .then(() => {
             // this.$vs.notify({
-            //   color: this.notification_color,
+            //   color: this.message_success_color,
             //   text: this.notification_text,
             //   icon: this.notification_icon,
             // });
@@ -776,11 +812,11 @@ export default {
         await this.$store
           .dispatch("lessonManage/getLessonList", category_id)
           .then(() => {
-            this.$vs.notify({
-              color: this.notification_color,
-              text: this.notification_text,
-              icon: this.notification_icon,
-            });
+            // this.$vs.notify({
+            //   color: this.notification_color,
+            //   text: this.notification_text,
+            //   icon: this.notification_icon,
+            // });
           });
       }
     },

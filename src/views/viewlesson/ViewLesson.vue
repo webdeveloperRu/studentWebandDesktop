@@ -339,12 +339,12 @@
                   Comments
                 </h3>
                 <h3
-                  class="ml-3 mb-3 "
+                  class="ml-3 mb-3"
                   v-bind:style="{
                     'font-family':
                       current_product.customize_settings.heading_font_family,
-                      color: current_product.customize_settings.dark_font_color,
-                      opacity: 0.5
+                    color: current_product.customize_settings.dark_font_color,
+                    opacity: 0.5,
                   }"
                 >
                   {{ comment_list.length }}
@@ -397,7 +397,7 @@
                       'font-family':
                         current_product.customize_settings.base_font_family,
                       color: current_product.customize_settings.dark_font_color,
-                      opacity: 0.5
+                      opacity: 0.5,
                     }"
                   >
                     {{ timeDifference(Date.now(), comment.created_on) }}
@@ -687,6 +687,38 @@ export default {
     download_files: {
       get() {
         return this.$store.getters["lessonManage/downloadfile_list"];
+      },
+    },
+
+    message_success_color: {
+      get() {
+        if (this.current_product.customize_settings.mc_success == null)
+          return "#1abc9c";
+        else return this.current_product.customize_settings.mc_success;
+      },
+    },
+
+    message_info_color: {
+      get() {
+        if (this.current_product.customize_settings.mc_info == null)
+          return "#34495e";
+        else return this.current_product.customize_settings.mc_info;
+      },
+    },
+
+    message_danger_color: {
+      get() {
+        if (this.current_product.customize_settings.mc_danger == null)
+          return "#e74c3c";
+        else return this.current_product.customize_settings.mc_danger;
+      },
+    },
+
+    message_warning_color: {
+      get() {
+        if (this.current_product.customize_settings.mc_warning == null)
+          return "#f39c12";
+        else return this.current_product.customize_settings.mc_warning;
       },
     },
   },
