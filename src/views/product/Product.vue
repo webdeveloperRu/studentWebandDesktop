@@ -597,7 +597,7 @@ export default {
     hero_overlay_color: {
       get() {
         if (this.current_product.customize_hero.overlay_color == null) {
-          return "#ffffff1f";
+          return "#005fcc87";
         } else return this.current_product.customize_hero.overlay_color;
       },
     },
@@ -613,7 +613,8 @@ export default {
     hero_background_image: {
       get() {
         if (this.current_product.hero_background_image == "") {
-          return require("@/assets/images/hero-default-banner.png");
+          // return require("@/assets/images/hero-default-banner.png");
+          return "";
         } else {
           return this.current_product.hero_background_image;
         }
