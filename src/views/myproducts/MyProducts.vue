@@ -178,7 +178,7 @@ export default {
   margin: 0 -20px;
   margin-top: -24px;
   background-position: center;
-  background-image: url("../../assets/images/big/img1.jpg");
+  background-image: url("../../assets/images/hero-default-banner.png");
   background-repeat: no-repeat;
   background-size: cover;
   height: 300px;
