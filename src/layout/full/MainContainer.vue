@@ -63,8 +63,8 @@ export default {
     updateFooter: 0,
     main_page: true,
     page_background_image: "",
-    header_logo_image : require("@/assets/images/logo/logo.png"),
-    footer_logo: ""
+    header_logo_image: require("@/assets/images/logo/logo.png"),
+    footer_logo: "",
   }),
 
   methods: {
@@ -74,7 +74,7 @@ export default {
 
     setFavIcon(current_path) {
       const favicon = document.getElementById("favicon");
-      if(current_path=="/library"){
+      if (current_path == "") {
         favicon.href = process.env.BASE_URL + "icon.png";
       } else if (this.current_product.favicon_image == "") {
         favicon.href = process.env.BASE_URL + "icon.png";
@@ -88,25 +88,24 @@ export default {
     },
 
     setPageBackgroundImage() {
-        let current_path = String(window.location.pathname);
-        if (current_path == "/library" || current_path == "/settings")  
-          this.page_background_image = ""
-        else
-          this.page_background_image = this.current_product.page_background_image
+      let current_path = String(window.location.pathname);
+      if (current_path == "/library" || current_path == "/settings")
+        this.page_background_image = "";
+      else
+        this.page_background_image = this.current_product.page_background_image;
     },
 
     setHeaderLogo() {
-        let current_path = String(window.location.pathname);
-        if(current_path == "/library")
-          this.header_logo_image = require("@/assets/images/logo/logo.png");
-        else if (this.current_product.header_logo_image)
-          this.header_logo_image =  this.current_product.header_logo_image;
-        else this.header_logo_image = require("@/assets/images/logo/logo.png");
+      let current_path = String(window.location.pathname);
+      if (current_path == "/library")
+        this.header_logo_image = require("@/assets/images/logo/logo.png");
+      else if (this.current_product.header_logo_image)
+        this.header_logo_image = this.current_product.header_logo_image;
+      else this.header_logo_image = require("@/assets/images/logo/logo.png");
     },
   },
 
   updated() {
-    
     let current_path = String(window.location.pathname);
     if (current_path == "/library") {
       this.main_page = true;
@@ -139,7 +138,6 @@ export default {
   },
 
   computed: {
-  
     academy_token: {
       get() {
         return JSON.parse(localStorage.getItem("academy_token"));
