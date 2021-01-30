@@ -1,37 +1,37 @@
 <template lang="html">
   <footer
     class="footer footer--dark footer--left"
-    v-bind:style="{
+    v-bind:style="[current_product.customize_footer?{
       background: current_product.customize_footer.background_color,
-    }"
+    } : '']"
   >
-    <div class="container">
-      <div class="footer__text-container">
+    <div class="container" v-if="current_product.customize_footer">
+      <div class="footer__text-container" >
         <span
           v-if="current_product.customize_footer.show_copyright"
           class="footer__copyright"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.text_color,
-          }"
+          }:'']"
           >{{ current_product.customize_footer.copyright_text }}</span
         >
       </div>
       <div
         class="footer-icon-layout d-flex"
         v-if="current_product.customize_footer.show_social_icons"
-        v-bind:style="{
+        v-bind:style="[current_product.customize_footer?{
           'justify-content': social_icon_alignment,
-        }"
+        }: '']"
       >
         <div
           v-if="current_product.customize_footer.sil_facebook != ''"
           class="footer-icon"
           :title="current_product.customize_footer.sil_facebook"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="ti-facebook"
@@ -42,11 +42,11 @@
           v-if="current_product.customize_footer.sil_twitter != ''"
           class="footer-icon"
           :title="current_product.customize_footer.sil_twitter"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="mdi mdi-twitter"
@@ -57,11 +57,11 @@
           v-if="current_product.customize_footer.sil_instagram != ''"
           class="footer-icon"
           :title="current_product.customize_footer.sil_instagram"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="ti-instagram"
@@ -74,11 +74,11 @@
           v-if="current_product.customize_footer.sil_youtube != ''"
           class="footer-icon"
           :title="current_product.customize_footer.sil_youtube"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="ti-youtube"
@@ -89,11 +89,11 @@
           :title="current_product.customize_footer.sil_vimeo"
           v-if="current_product.customize_footer.sil_vimeo != ''"
           class="footer-icon"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="ti-vimeo"
@@ -104,11 +104,11 @@
           :title="current_product.customize_footer.sil_github"
           v-if="current_product.customize_footer.sil_github != ''"
           class="footer-icon"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="ti-github"
@@ -119,11 +119,11 @@
           :title="current_product.customize_footer.sil_itunes"
           v-if="current_product.customize_footer.sil_itunes != ''"
           class="footer-icon"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="mdi mdi-itunes"
@@ -134,11 +134,11 @@
           :title="current_product.customize_footer.sil_linkedin"
           v-if="current_product.customize_footer.sil_linkedin != ''"
           class="footer-icon"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="ti-linkedin"
@@ -149,11 +149,11 @@
           :title="current_product.customize_footer.sil_soundcloud"
           v-if="current_product.customize_footer.sil_soundcloud != ''"
           class="footer-icon"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="mdi mdi-soundcloud"
@@ -166,11 +166,11 @@
           :title="current_product.customize_footer.sil_tumblr"
           v-if="current_product.customize_footer.sil_tumblr != ''"
           class="footer-icon"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="ti-tumblr"
@@ -181,11 +181,11 @@
           :title="current_product.customize_footer.sil_flickr"
           v-if="current_product.customize_footer.sil_flickr != ''"
           class="footer-icon"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="ti-flickr"
@@ -196,11 +196,11 @@
           :title="current_product.customize_footer.sil_slack"
           v-if="current_product.customize_footer.sil_slack != ''"
           class="footer-icon"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }: '']"
         >
           <i
             class="mdi mdi-slack"
@@ -211,11 +211,11 @@
           :title="current_product.customize_footer.sil_dribbble"
           v-if="current_product.customize_footer.sil_dribbble != ''"
           class="footer-icon"
-          v-bind:style="{
+          v-bind:style="[current_product.customize_footer?{
             color: current_product.customize_footer.social_icon_color,
             background: social_icon_background_color,
             'border-radius': social_icon_border_radius,
-          }"
+          }:'']"
         >
           <i
             class="ti-dribbble"
@@ -239,17 +239,17 @@ export default {
   data: () => ({}),
 
   computed: {
-    product_id: function() {
+    product_id: function () {
       var id = this.$route.params.product_id;
       if (id !== undefined) return id.slice(0, id.length);
       else return "";
     },
-    category_id: function() {
+    category_id: function () {
       var id = this.$route.params.category_id;
       if (id !== undefined) return id.slice(0, id.length);
       else return "";
     },
-    lesson_id: function() {
+    lesson_id: function () {
       var id = this.$route.params.lesson_id;
       if (id !== undefined) return id.slice(0, id.length);
       else return "";
