@@ -44,13 +44,17 @@ export default {
 .footer {
   background: #272d34;
   padding: 15px 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 120px;
 }
 .footer--dark {
   color: #fff;
 }
 .footer__text-container {
   overflow: hidden;
-  text-align: center
+  text-align: center;
 }
 .footer__copyright {
   line-height: 40px;

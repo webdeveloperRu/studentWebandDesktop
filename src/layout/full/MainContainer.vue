@@ -195,5 +195,10 @@ export default {
   background-size: cover !important;
   background-blend-mode: multiply;
   background-attachment: fixed;
+  min-height: 100vh;
+  padding-bottom: 120px;
+}
+.main-wrapper {
+  position: relative;
 }
 </style>

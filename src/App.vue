@@ -99,9 +99,4 @@ export default {
   -moz-user-select: none !important;
   -webkit-user-select: none !important;
 }
-
-.vuesax-app-is-ltr {
-  background-color: #272d34;
-  height: 100%;
-}
 </style>
