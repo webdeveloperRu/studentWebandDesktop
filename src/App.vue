@@ -64,7 +64,9 @@ export default {
       });
     } else {
       if (JSON.parse(localStorage.getItem("academy_token")) !== null) {
-        this.$router.push(window.location.pathname).catch(() => {});
+        if (window.location.pathname == "/")
+          this.$router.push("/library").catch(() => {});
+        else this.$router.push(window.location.pathname).catch(() => {});
       } else {
         if (this.logged_user != null) this.checkToken();
         else this.$router.replace("/login");
