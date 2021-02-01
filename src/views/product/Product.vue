@@ -22,8 +22,7 @@
           class="producttitle-category"
           v-bind:style="{
             color: hero_text_color,
-            'font-family':
-              current_product.customize_settings.heading_font_family,
+            'font-family': heading_font_family,
           }"
         >
           {{ current_product.title }}
@@ -31,8 +30,8 @@
         <p
           class="product-description-category"
           v-bind:style="{
-            color: current_product.customize_hero.text_color,
-            'font-family': current_product.customize_settings.base_font_family,
+            color: hero_text_color,
+            'font-family': base_font_family,
           }"
         >
           {{ current_product.description }}
@@ -41,8 +40,7 @@
           class="mt-2"
           @click.native="startCourse(current_product)"
           v-bind:style="{
-            'font-family':
-              current_product.customize_settings.heading_font_family,
+            'font-family': heading_font_family,
           }"
           >Start Course</vs-button
         >
@@ -61,7 +59,7 @@
         class="mb-3"
         code-toggler
         v-bind:style="{
-          'font-family': current_product.customize_settings.base_font_family,
+          'font-family': base_font_family,
         }"
       >
         <span
@@ -90,7 +88,7 @@
             vs-xs="12"
             code-toggler
           >
-            <vs-card v-if="current_product.customize_wellcome.show_welcome">
+            <vs-card v-if="show_welcome">
               <div
                 v-bind:style="{
                   'text-align': welcome_text_aligment,
@@ -100,8 +98,7 @@
                   class="product-welcome-title"
                   v-bind:style="{
                     color: dark_font_color,
-                    'font-family':
-                      current_product.customize_settings.heading_font_family,
+                    'font-family': heading_font_family,
                   }"
                 >
                   {{ current_product.title }}
@@ -110,17 +107,14 @@
                   class="product-welcome-description"
                   v-bind:style="{
                     color: dark_font_color,
-                    'font-family':
-                      current_product.customize_settings.base_font_family,
+                    'font-family': base_font_family,
                   }"
                 >
                   {{ current_product.description }}
                 </p>
               </div>
             </vs-card>
-            <div
-              v-if="current_product.customize_syllabus.syllabus_type == 'Posts'"
-            >
+            <div v-if="syllabus_type == 'Posts'">
               <vs-card
                 v-for="(category, index_card) in category_list"
                 v-bind:key="index_card"
@@ -130,8 +124,7 @@
                   style="cursor: pointer"
                   @click="viewCategory(category.id)"
                   v-bind:style="{
-                    'font-family':
-                      current_product.customize_settings.heading_font_family,
+                    'font-family': heading_font_family,
                     color: dark_font_color,
                   }"
                 >
@@ -163,7 +156,8 @@
                         class="category-image"
                         style="cursor: pointer"
                         v-bind:style="{
-                          'background-image': 'url(' + getLessonThumbnail(lesson.thumbnail) + ')',
+                          'background-image':
+                            'url(' + getLessonThumbnail(lesson.thumbnail) + ')',
                         }"
                       ></div>
                     </vs-col>
@@ -180,9 +174,7 @@
                         <h4
                           class="mb-2"
                           v-bind:style="{
-                            'font-family':
-                              current_product.customize_settings
-                                .base_font_family,
+                            'font-family': base_font_family,
                             color: dark_font_color,
                           }"
                         >
@@ -191,9 +183,7 @@
                         <div
                           class="category-description"
                           v-bind:style="{
-                            'font-family':
-                              current_product.customize_settings
-                                .base_font_family,
+                            'font-family': base_font_family,
                             color: dark_font_color,
                           }"
                         >
@@ -230,11 +220,10 @@
                     @click="viewMore(index_card)"
                     style="cursor: pointer; color: dodgerblue"
                     v-bind:style="{
-                      'font-family':
-                        current_product.customize_settings.base_font_family,
+                      'font-family': base_font_family,
                     }"
                   >
-                    {{ current_product.customize_syllabus.show_more_text }}
+                    {{ show_more_text }}
                   </div>
                 </div>
               </vs-card>
@@ -244,12 +233,11 @@
                 <h3
                   class="mb-3"
                   v-bind:style="{
-                    'font-family':
-                      current_product.customize_settings.heading_font_family,
+                    'font-family': heading_font_family,
                     color: dark_font_color,
                   }"
                 >
-                  {{ current_product.customize_syllabus.categories_text }}
+                  {{ categories_text }}
                 </h3>
                 <div
                   v-for="(category, index) in category_list"
@@ -274,7 +262,10 @@
                       <div
                         class="category-image"
                         v-bind:style="{
-                          'background-image': 'url(' + getCategoryThumbnail(category.thumbnail) + ')',
+                          'background-image':
+                            'url(' +
+                            getCategoryThumbnail(category.thumbnail) +
+                            ')',
                         }"
                       ></div>
                     </vs-col>
@@ -305,14 +296,12 @@
               </vs-card>
             </div>
             <div v-if="category_list.length == 0">
-                <vs-card>
-                  <div class="mt-5 mb-5">
-                    <h3>
-                      There is no course data in this product...
-                    </h3>
-                  </div>
-                </vs-card>
-              </div>
+              <vs-card>
+                <div class="mt-5 mb-5">
+                  <h3>There is no course data in this product...</h3>
+                </div>
+              </vs-card>
+            </div>
           </vs-col>
           <vs-col
             type="flex"
@@ -334,8 +323,7 @@
                 <h4
                   class="mt-3"
                   v-bind:style="{
-                    'font-family':
-                      current_product.customize_settings.heading_font_family,
+                    'font-family': heading_font_family,
                     color: dark_font_color,
                   }"
                 >
@@ -354,8 +342,7 @@
               <div
                 class="mt-3"
                 v-bind:style="{
-                  'font-family':
-                    current_product.customize_settings.base_font_family,
+                  'font-family': base_font_family,
                   color: dark_font_color,
                 }"
               >
@@ -366,8 +353,7 @@
               <h4
                 class="mb-3"
                 v-bind:style="{
-                  'font-family':
-                    current_product.customize_settings.heading_font_family,
+                  'font-family': heading_font_family,
                   color: dark_font_color,
                 }"
               >
@@ -386,8 +372,7 @@
                   <div
                     class="mb-1"
                     v-bind:style="{
-                      'font-family':
-                        current_product.customize_settings.base_font_family,
+                      'font-family': base_font_family,
                       color: dark_font_color,
                     }"
                   >
@@ -397,8 +382,7 @@
                   <div
                     style="color: dodgerblue"
                     v-bind:style="{
-                      'font-family':
-                        current_product.customize_settings.base_font_family,
+                      'font-family': base_font_family,
                     }"
                   >
                     Instructor
@@ -522,6 +506,7 @@ export default {
     product_margin_top: {
       get() {
         let logo_height_diff = 0;
+        if (this.current_product.customize_header == undefined) return "0px";
         if (this.current_product.customize_header.custom_logo_height > 56) {
           logo_height_diff =
             this.current_product.customize_header.custom_logo_height - 56;
@@ -540,7 +525,8 @@ export default {
 
     hero_alignment: {
       get() {
-        let value = "";
+        let value = "center";
+        if (this.current_product.customize_hero == undefined) return value;
         switch (this.current_product.customize_hero.alignment) {
           case "Centered":
             value = "center";
@@ -558,6 +544,7 @@ export default {
     hero_spacing: {
       get() {
         let value = "";
+        if (this.current_product.customize_hero == undefined) return "30px";
         switch (this.current_product.customize_hero.spacing) {
           case "Small":
             value = "30px";
@@ -596,6 +583,8 @@ export default {
 
     hero_overlay_color: {
       get() {
+        if (this.current_product.customize_hero == undefined)
+          return "#005fcc87";
         if (this.current_product.customize_hero.overlay_color == null) {
           return "#005fcc87";
         } else return this.current_product.customize_hero.overlay_color;
@@ -604,6 +593,7 @@ export default {
 
     hero_text_color: {
       get() {
+        if (this.current_product.customize_hero == undefined) return "#ffffff";
         if (this.current_product.customize_hero.text_color == null) {
           return "#ffffff";
         } else return this.current_product.customize_hero.text_color;
@@ -623,48 +613,100 @@ export default {
 
     dark_font_color: {
       get() {
-        if ( this.current_product.customize_settings.dark_font_color == null)
-          return "#000000"
-        else
-          return this.current_product.customize_settings.dark_font_color
-      }
+        if (this.current_product.customize_settings == undefined)
+          return "#000000";
+        if (this.current_product.customize_settings.dark_font_color == null)
+          return "#000000";
+        else return this.current_product.customize_settings.dark_font_color;
+      },
     },
 
     message_success_color: {
       get() {
-        if ( this.current_product.customize_settings.mc_success == null)
-          return "#1abc9c"
-        else
-          return this.current_product.customize_settings.mc_success
-      }
+        if (this.current_product.customize_settings == undefined)
+          return "#1abc9c";
+        if (this.current_product.customize_settings.mc_success == null)
+          return "#1abc9c";
+        else return this.current_product.customize_settings.mc_success;
+      },
     },
 
     message_info_color: {
       get() {
-        if ( this.current_product.customize_settings.mc_info == null)
-          return "#34495e"
-        else
-          return this.current_product.customize_settings.mc_info
-      }
+        if (this.current_product.customize_settings == undefined)
+          return "#34495e";
+        if (this.current_product.customize_settings.mc_info == null)
+          return "#34495e";
+        else return this.current_product.customize_settings.mc_info;
+      },
     },
 
     message_danger_color: {
       get() {
-        if ( this.current_product.customize_settings.mc_danger == null)
-          return "#e74c3c"
-        else
-          return this.current_product.customize_settings.mc_danger
-      }
+        if (this.current_product.customize_settings == undefined)
+          return "#e74c3c";
+        if (this.current_product.customize_settings.mc_danger == null)
+          return "#e74c3c";
+        else return this.current_product.customize_settings.mc_danger;
+      },
     },
 
     message_warning_color: {
       get() {
-        if ( this.current_product.customize_settings.mc_warning == null)
-          return "#f39c12"
-        else
-          return this.current_product.customize_settings.mc_warning
-      }
-    }
+        if (this.current_product.customize_settings == undefined)
+          return "#f39c12";
+        if (this.current_product.customize_settings.mc_warning == null)
+          return "#f39c12";
+        else return this.current_product.customize_settings.mc_warning;
+      },
+    },
+
+    heading_font_family: {
+      get() {
+        if (this.current_product.customize_settings == undefined) return "";
+        else return this.current_product.customize_settings.heading_font_family;
+      },
+    },
+
+    base_font_family: {
+      get() {
+        if (this.current_product.customize_settings == undefined) return "";
+        else return this.current_product.customize_settings.base_font_family;
+      },
+    },
+
+    show_welcome: {
+      get() {
+        if (this.current_product.customize_wellcome == undefined) return false;
+        else if (this.current_product.customize_wellcome.show_welcome)
+          return true;
+        else return false;
+      },
+    },
+
+    syllabus_type: {
+      get() {
+        if (this.current_product.customize_syllabus == undefined)
+          return "Posts";
+        else return this.current_product.customize_syllabus.syllabus_type;
+      },
+    },
+
+    show_more_text: {
+      get() {
+        if (this.current_product.customize_syllabus == undefined)
+          return "show more";
+        else return this.current_product.customize_syllabus.show_more_text;
+      },
+    },
+
+    categories_text: {
+      get() {
+        if (this.current_product.customize_syllabus == undefined)
+          return "categories";
+        else return this.current_product.customize_syllabus.categories_text;
+      },
+    },
   },
   watch: {
     is_fake: function () {
@@ -691,11 +733,11 @@ export default {
       } else if (this.is_fake) {
         await this.$store
           .dispatch("productManage/getProductListDemo")
-          .then(() => {
-          });
+          .then(() => {});
       } else {
-        await this.$store.dispatch("productManage/getProductList").then(() => {
-        });
+        await this.$store
+          .dispatch("productManage/getProductList")
+          .then(() => {});
       }
     },
     async loadingLessons() {
@@ -781,20 +823,16 @@ export default {
       if (this.academy_token !== null) {
         await this.$store
           .dispatch("lessonManage/getLessonListPreview", category_id)
-          .then(() => {
-           
-          });
+          .then(() => {});
       } else if (this.is_fake) {
         await this.$store
           .dispatch("lessonManage/getLessonListDemo", category_id)
-          .then(() => {
-           
-          });
+          .then(() => {});
       } else {
         await this.$store
           .dispatch("lessonManage/getLessonList", category_id)
           .then(() => {
-            if(!this.status_got) {
+            if (!this.status_got) {
               this.$vs.notify({
                 color: this.message_danger_color,
                 text: this.notification_text,
@@ -851,19 +889,19 @@ export default {
 
     getCategoryThumbnail(url) {
       if (url == "" || url == null) {
-        return require("@/assets/images/default-product.png")
+        return require("@/assets/images/default-product.png");
       } else {
-        return url
+        return url;
       }
     },
 
     getLessonThumbnail(url) {
       if (url == "" || url == null) {
-        return require("@/assets/images/default-product.png")
+        return require("@/assets/images/default-product.png");
       } else {
-        return url
+        return url;
       }
-    }
+    },
   },
 };
 </script>

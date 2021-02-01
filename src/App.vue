@@ -32,22 +32,24 @@ export default {
     },
 
     async getProductList(product_id) {
-      this.$vs.loading({ type: "material" });
-      if (this.academy_token !== null) {
-        await this.$store
-          .dispatch("productManage/getProductListPreview")
-          .then(() => {
-            for (let i = 0; i < this.product_list.length; i++) {
-              if (this.product_list[i].id == product_id) {
-                this.$store.dispatch(
-                  "productManage/setCurrentProduct",
-                  this.product_list[i]
-                );
+      try {
+        this.$vs.loading({ type: "material" });
+        if (this.academy_token !== null) {
+          await this.$store
+            .dispatch("productManage/getProductListPreview")
+            .then(() => {
+              for (let i = 0; i < this.product_list.length; i++) {
+                if (this.product_list[i].id == product_id) {
+                  this.$store.dispatch(
+                    "productManage/setCurrentProduct",
+                    this.product_list[i]
+                  );
+                }
               }
-            }
-          });
-      }
-      this.$vs.loading.close(this.$refs.loading);
+            });
+        }
+        this.$vs.loading.close(this.$refs.loading);
+      } catch (err) {}
     },
   },
 
@@ -57,11 +59,12 @@ export default {
     let product_id = params.get("id");
     if (token !== null) {
       this.$store.commit("ACADEMY_TOKEN", token);
-      this.getProductList(product_id);
-      this.$router.replace("/library").catch(() => {});
+      this.getProductList(product_id).then(() => {
+        this.$router.replace("/product/" + product_id).catch(() => {});
+      });
     } else {
       if (JSON.parse(localStorage.getItem("academy_token")) !== null) {
-        this.$router.replace("/library").catch(() => {});
+        this.$router.push(window.location.pathname).catch(() => {});
       } else {
         if (this.logged_user != null) this.checkToken();
         else this.$router.replace("/login");
